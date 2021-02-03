@@ -20,13 +20,16 @@ So I would love to make their lives easier, even if that means that I may lose m
 
 Detect two types of components of figure skating which are *skating skills* and *technical* components. These
 scores are determined by the judges however, it is possible to predict the scores you will get in a competition prior
-to competing if the right calculations are done with the right parameters.
+to competing if the right calculations are done with the right parameters. An important factor to consider while making
+these calculations is the *elements* in one's choreography. Elements are special movements done by the skaters during
+their choreographies to get points and elements have 3 main types: jumps, spins and steps.
+
 With this application, **users will be able to see an approximation of the score they will get with their current
-choreography**. Thus, according to the aim of the competitor (whether it is earning a medal, ranking at a certain place or
-getting a specific point), the users will be able to determine if they should change or switch certain elements.
-With the help of this application, they may decide to go with an easier choreography (where elements have lower points)
-but choose to get more bonus points from the judges instead of going with a harder choreography (where elements have
-higher points) but risk the bonus points they will get.
+choreography**. Thus, according to the aim of the competitor (whether it is earning a medal, ranking at a certain place
+or getting a specific point), the users will be able to determine if they should change or switch certain elements.
+So with the help of this strategy determinator, they may decide to go with an easier choreography (where 
+elements have lower points) but choose to get more bonus points from the judges instead of going with a harder
+choreography (where elements have higher points) but risk the bonus points they will get.
 
 - The people who will use this project are:
 
@@ -40,20 +43,27 @@ in the choreography. Each element has its own variation of scores. This variatio
 the judges may add to the *base point* of the element, or the points they may take from that element (also known as
 *GOE scores*) depending on the quality of it. So once the elements in the choreography are selected as well
 as the GOE scores, the application will come up with the *technical score* of that choreography. The *skating
-skills* component however completely depends on your presentation of the choreohraphy and how much the judges have
-enjoyed it rather than certain elements. This skill is a skill that comes with experience and confidence on the ice
-so the application will need some data for this. There will be slots for the user to enter the skating
-skills scores they have received in the past competitions. Once the user enters these scores in a reverse-chronological
-way, the application will predict their skating skills score for the next competition by constructing a graph of the
-previous data and making an estimation with the line of best fit. Once both of the scores are calculated, they will be
-demonstrated on the screen and the user will know whether they should make adjustments or compete with the choreohraphy
-they have.
+skills* component however completely depends on your presentation of the choreography and how much the judges have
+enjoyed it rather than certain elements. This skill is one that comes with experience and confidence on the ice,
+so the application will just prompt the user to enter a skating skills score they have received (most preferably a
+recent one).
+
+It would not be practical for this application to estimate the skating skills score depending on multiple results from
+the past rather than the most recent one because these scores are very reliant on who the judges are, what type of
+energy the skater radiates that day on the ice and even the difficulty of the competition. Since the skating skills
+component is not as concrete as the technical component and it relies on so many and very different factors, adding more
+scores from the past simply wouldn't contribute to the precision of the prediction. That is why only a single score of
+skating skills would be enough.
+
+Once both of the scores are calculated, they will be demonstrated on the screen and the user will know whether they
+should make adjustments or compete with the choreography they have.
 
 #### *USER STORIES*
 
-- As a user, I want to be able to add an element to my choreohraphy.
-- As a user, I want to be able to add my previous points to my skating skills component history.
+- As a user, I want to be able to add an element to my choreography.
 - As a user, I want to be able to choose which element I am adding.
 - As a user, I want to view the elements I have already added to my choreography.
 - As a user, I want the option to not add a GOE score as I may not have an idea about what the judges will 
 think of the element.
+- As a user, I would like to see if the duration of my choreography fits the standards of the Ice Skating Union rule
+book.
