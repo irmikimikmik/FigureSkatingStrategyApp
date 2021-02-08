@@ -14,7 +14,7 @@ public class Choreography {
     private List<Element> listOfElements;
 
     public Choreography(double deductions, boolean category, int falls,
-                        double duration, boolean type, double sscomponent){
+                        double duration, boolean type, double sscomponent) {
         this.deductions = deductions;
         this.category = category;
         this.falls = falls;
@@ -24,73 +24,71 @@ public class Choreography {
         this.listOfElements = new ArrayList<Element>();
     }
 
-    public void setDeductions(float deduction){
+    public void setDeductions(float deduction) {
         this.deductions = deduction;
     }
 
-    public double getDeductions(){
+    public double getDeductions() {
         return this.deductions;
     }
 
-    public void setSkaterCategory(boolean b){
+    public void setSkaterCategory(boolean b) {
         this.category = b;
     }
 
-    public boolean getSkaterCategory(){
+    public boolean getSkaterCategory() {
         return this.category;
     }
 
-    public void addFalls(int i){
+    public void addFalls(int i) {
         this.falls = this.falls + i;
     }
 
-    public int getFalls(){
+    public int getFalls() {
         return this.falls;
     }
 
-    public void setDuration(float f){
+    public void setDuration(float f) {
         this.duration = f;
     }
 
-    public double getDuration(){
+    public double getDuration() {
         return this.duration;
     }
 
-    public void setType(boolean b){
+    public void setType(boolean b) {
         this.type = b;
     }
 
-    public boolean getType(){
+    public boolean getType() {
         return this.type;
     }
 
-    public void setSkatingSkillsComponent(float f){
+    public void setSkatingSkillsComponent(float f) {
         this.skatingSkillsComponent = f;
     }
 
-    public double getSkatingSkillsComponent(){
+    public double getSkatingSkillsComponent() {
         return this.skatingSkillsComponent;
     }
 
-    //!!!
-    public void addElement(Element e){
-        this.listOfElements.add(e);
-    }
-
-//    public Element removeElement(){
-//        this.listOfElements.remove();
-//    }
-
-    public int size(){
+    public int size() {
         int result = 0;
-        for (Element e : this.listOfElements){
+        for (Element e : this.listOfElements) {
             result++;
         }
         return result;
     }
 
 
+    //!!!
+    public void addElement(Element e) {
+        this.listOfElements.add(e);
+    }
 
+//    public Element removeElement(){
+//        this.listOfElements.remove();
+//    }
 
     // Write Specifications for the entire project!!!
     // add constructors to step jmp

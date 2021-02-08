@@ -1,7 +1,5 @@
 package model;
 
-java.lang.String;
-
 public abstract class Element {
 
     private String name;
@@ -14,7 +12,6 @@ public abstract class Element {
         this.basePoint = basePoint;
         this.goe = goe;
         this.type = type;
-
     }
 
     public void setElementName(String name) {

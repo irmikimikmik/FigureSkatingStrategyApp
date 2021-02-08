@@ -1,20 +1,19 @@
 package model;
 
-public class Jump extends Element{
+public class Jump extends Element {
 
-    private float rotations;
+    private double rotations;
 
-    public Jump(String name, double basePoint, double goe, String type) {
-        this.name = name;
-        this.basePoint = basePoint;
-        this.goe = goe;
-        this.type = type;
+    public Jump(String name, double basePoint, double goe, String type, double rotations) {
+        super(name, basePoint, goe, type);
+        this.rotations = rotations;
     }
-    public void setRotations(float f){
+
+    public void setRotations(float f) {
         this.rotations = f;
     }
 
-    public float getRotations(){
+    public double getRotations() {
         return this.rotations;
     }
 

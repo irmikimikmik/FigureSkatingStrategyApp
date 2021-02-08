@@ -55,39 +55,6 @@
 //
 //
 //        }
-//
-//
-//
-//        public void askQuestions() {
-//            TypeQuestion()
-//        }
-//    }
-//
-//    // !!!
-//    private String TypeQuestion() {
-//        System.out.println("Please enter the type of your choreography: 'short' or 'free'?");
-//        if (command.equals("short")) {
-//            Choreography.setType(true);
-//        } else if (command.equals("free")) {
-//            Choreography.setType(false);
-//        } else {
-//            System.out.println("Selection not valid... Please try again");
-//            TypeQuestion();
-//        }
-//    }
-//
-//    private void CategoryQuestion() {
-//        System.out.println("Please enter your category: 'ladies' or 'men'?");
-//        if (command.equals("ladies")) {
-//            Choreography.setSkaterCategory(true);
-//        } else if (command.equals("men")) {
-//            Choreography.setSkaterCategory(false);
-//        } else {
-//            System.out.println("Selection not valid... Please try again");
-//            CategoryQuestion();
-//        }
-//    }
-//
 //    private void calculate() {
 //
 //        // multiply by 1.1 for second half elements
