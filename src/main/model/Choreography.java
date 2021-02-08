@@ -5,21 +5,22 @@ import java.util.List;
 
 public class Choreography {
 
-    private float deductions;
+    private double deductions;
     private boolean category; //true is ladies, false is men
     private int falls;
-    private float duration;
+    private double duration;
     private boolean type; //true is short program, false is free program
-    private float skatingSkillsComponent;
+    private double skatingSkillsComponent;
     private List<Element> listOfElements;
 
-    public Choreography Choreography(){
-        this.deductions = 0;
-        this.category = true;
-        this.falls = 0;
-        this.duration = 0;
-        this.type = true;
-        this.skatingSkillsComponent = 0;
+    public Choreography(double deductions, boolean category, int falls,
+                        double duration, boolean type, double sscomponent){
+        this.deductions = deductions;
+        this.category = category;
+        this.falls = falls;
+        this.duration = duration;
+        this.type = type;
+        this.skatingSkillsComponent = sscomponent;
         this.listOfElements = new ArrayList<Element>();
     }
 
@@ -27,7 +28,7 @@ public class Choreography {
         this.deductions = deduction;
     }
 
-    public float getDeductions(){
+    public double getDeductions(){
         return this.deductions;
     }
 
@@ -51,7 +52,7 @@ public class Choreography {
         this.duration = f;
     }
 
-    public float getDuration(){
+    public double getDuration(){
         return this.duration;
     }
 
@@ -67,7 +68,7 @@ public class Choreography {
         this.skatingSkillsComponent = f;
     }
 
-    public float getSkatingSkillsComponent(){
+    public double getSkatingSkillsComponent(){
         return this.skatingSkillsComponent;
     }
 
@@ -76,9 +77,9 @@ public class Choreography {
         this.listOfElements.add(e);
     }
 
-    public Element removeElement(){
-        this.listOfElements.remove();
-    }
+//    public Element removeElement(){
+//        this.listOfElements.remove();
+//    }
 
     public int size(){
         int result = 0;
