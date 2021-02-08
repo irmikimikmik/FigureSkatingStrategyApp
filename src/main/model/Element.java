@@ -1,21 +1,54 @@
 package model;
 
-public class Element {
+abstract public class Element {
 
-    // Fields: name
-    //         base point
-    //         GOE
-    //         type
+    private String name;
+    private float basePoint;
+    private float goe;
+    private String type;
 
-    // Methods: setName(string s);
-    //          getName();
-    //          setBasePoint(int i);
-    //          getBasePoint();
-    //          addGOE(int i);
-    //          getGOE();
-    //          setType(string s);
-    //          getType();
+    public Element Element(String name, float basePoint, float goe, String type){
+        this.name = name;
+        this.basePoint = basePoint;
+        this.goe = goe;
+        this.type = type;
+    }
 
-    // something with order of the elements may be added
+    public void setElementName(String name){
+        this.name = name;
+    }
+
+    public String getElementName(){
+        return this.name;
+    }
+
+    public void setBasePoint(float f){
+        this.basePoint = f;
+    }
+
+    public float getBasePoint(){
+        return this.basePoint;
+    }
+
+    public void addGOE(float f){
+        this.goe = this.goe + f;
+    }
+
+    public float getGOE(){
+        return this.goe;
+    }
+
+    public void setElementType(String type){
+        this.type = type;
+    }
+
+    public String getElementType(){
+        return this.type;
+    }
+
+
+    // something in regards to the order of the elements may be added
+    // a list of elements with their base values must be created in data folder
+    // also do you really need these getters and setters if you already declare all the fields in the constructor?
 
 }

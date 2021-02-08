@@ -33,8 +33,8 @@ choreography (where elements have higher points) but risk the bonus points they 
 
 - The people who will use this project are:
 
-**Figure skating coaches** and **figure skaters** all around the world, specifically the ones competing in Challenge
-Series, Grand Prix competitions or European/World Championships.
+**Senior level figure skating coaches** and **senior level figure skaters** all around the world, specifically the ones
+competing in Challenge Series, Grand Prix competitions or European/World Championships.
 
 #### Details of how this application will work:
 

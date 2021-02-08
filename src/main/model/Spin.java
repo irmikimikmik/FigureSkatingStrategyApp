@@ -1,10 +1,15 @@
 package model;
 
-public class Spin {
+public class Spin extends Element{
 
-    //inherits from Element
-    // extra fields: Level
-    // extra methods: setLevel(int i);
-    //                getLevel();
+    private int level;
+
+    public void setLevel(int i){
+        this.level = i;
+    }
+
+    public int getLevel(){
+        return this.level;
+    }
 
 }

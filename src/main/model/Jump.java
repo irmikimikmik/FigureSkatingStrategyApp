@@ -1,10 +1,15 @@
 package model;
 
-public class Jump {
+public class Jump extends Element{
 
-    //inherits from Element
-    // extra fields: Rotation
-    // extra methods: setRotation(int i);
-    //                getRotation();
+    private float rotations;
+
+    public void setRotations(float f){
+        this.rotations = f;
+    }
+
+    public float getRotations(){
+        return this.rotations;
+    }
 
 }
