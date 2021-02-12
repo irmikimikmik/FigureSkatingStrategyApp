@@ -1,7 +1,6 @@
 package ui;
 
-import model.Choreography;
-import model.Element;
+import model.*;
 
 import java.util.Scanner;
 
@@ -43,16 +42,19 @@ public class StrategyApp {
 
     public void welcomeMessage() {
         System.out.println("\nLets predict your competition score!");
-        System.out.println("\nNOTE: Please use the ISU abbreviations for all elements. For example:");
+        System.out.println("\nNOTE: Please use the ISU abbreviations for all elements.");
+        System.out.println("ISU abbreviatons can be found here: https://www.isu.org/inside-isu/rules-regulations/"
+                + "isu-congresses/17142-isu-communication-2168/file.");
+        System.out.println("\nExamples of abbreviations:");
         System.out.println("\tTriple Toeloop : 3T");
-        System.out.println("\tDouble Loop : 2L");
-        System.out.println("\tDouble Axel + Half Loop + Triple Flip: 2A+1Eu+3F");
+        System.out.println("\tUnder-rotated Double Loop : 2Lo<");
+        System.out.println("\tUnder-rotated and Edge Singe Lutz : 1Lz<e");
+        System.out.println("\tDouble Axel + Half Loop + Triple Flip: 2A + 1Eu + 3F");
         System.out.println("\tLevel 3 Step Sequence : StSq3");
-        System.out.println("\tLevel 2 Choreography Sequence: ChSq2");
+        System.out.println("\tChoreography Sequence: ChSq1");
         System.out.println("\tLevel 4 Change Leg Combo Spin: CCoSp4");
         System.out.println("\tLevel 1 Layback Spin: LSp1");
-        System.out.println("\nMake sure that for jumps, the number is at the front and for spins & steps,"
-                + "the number is at the end of the element.");
+        System.out.println("\tLevel Base Flying Upright Spin with Volume: FUSpBV");
         System.out.println("\nPress 's' to start. Press 'q' to quit any time.");
     }
 
@@ -60,13 +62,13 @@ public class StrategyApp {
         categoryQuestion();
         typeQuestion();
 
-        if (choreography.getType() == true) {
+        if (choreography.getType()) {
             System.out.println("There must be 7 elements in your choreography.");
             int numOfElements = 7;
             System.out.println("Please type in all elements in order and according to the ISU abbreviations.");
             elementsQuestion(numOfElements);
         } else {
-            if (choreography.getSkaterCategory() == true) {
+            if (choreography.getSkaterCategory()) {
                 System.out.println("There must be 11 elements in your choreography.");
                 int numOfElements = 11;
                 System.out.println("Please type in all elements in order and according to the ISU abbreviations.");
@@ -115,47 +117,127 @@ public class StrategyApp {
     private void elementsQuestion(int i) {
 
         for (int x = 0; x < i; x++) {
-            System.out.println(ordinal(x) + " element: ");
+
+            System.out.println(ordinal(x + 1) + " element: ");
             String elementName = input.next();
 
-            if (checkIfProperElement(elementName) == false) {
+            while (!checkIfProperElement(elementName)) {
                 System.out.println("Please enter valid elements that are either spins, steps or jumps.");
-                break;
-                elementsQuestion(x--);
+                elementName = input.next();
             }
 
-            System.out.println("Any GOEs? (For example: 0.15) ");
-            String elementGOE = input.next();
-            checkIfProperGOE(elementGOE);
+            System.out.println("Any GOEs? (For example: 0.23 or -0.18)");
+            String stringGOE = input.next();
 
-            double elementBasePoint = basePointFinder(elementName);
+            while (!checkIfProperGOE(stringGOE)) {
+                System.out.println("Please enter a valid GOE in the form of *.** using decimal points.");
+                stringGOE = input.next();
+            }
+
+            double elementGOE = Double.parseDouble(stringGOE);
             String elementType = typeFinder(elementName);
-            Element newElement = new Element(elementName, elementBasePoint, elementGOE, elementType);
-            choreography.addElement(newElement);
-        }
+            int rotationOrLevel = Integer.parseInt(rotationOrLevelFinder(elementName, elementType));
+            double elementBasePoint = basePointFinder(elementName);
 
+            createAndAddElement(elementType, elementName, elementBasePoint, elementGOE, rotationOrLevel);
+        }
     }
 
-    //basePointFinder
-    //typeFinder
-    //checkIfProperElement
-    //checkIfProperGOE
+    public void createAndAddElement(String elementType, String elementName,
+                                 double elementBasePoint, double elementGOE, int rotationOrLevel) {
+        switch (elementType) {
+            case "Jump": {
+                Element newElement = new Jump(elementName, elementBasePoint, elementGOE,
+                        elementType, rotationOrLevel);
+                choreography.addElement(newElement);
+                break;
+            }
+            case "Spin": {
+                Element newElement = new Spin(elementName, elementBasePoint, elementGOE,
+                        elementType, rotationOrLevel);
+                choreography.addElement(newElement);
+                break;
+            }
+            case "Step": {
+                Element newElement = new Step(elementName, elementBasePoint, elementGOE,
+                        elementType, rotationOrLevel);
+                choreography.addElement(newElement);
+                break;
+            }
+        }
+    }
+
+    public double basePointFinder(String s) {
+        return 1.0; //!!!
+    }
+
+    // focus on stopping when q is done!!!
+    // see if valid element by checking csv file.!!!
+    // calculate methodunu tamamla!!!
+    // add specificaitons !!!
+
+    // 0 is Base
+    public String rotationOrLevelFinder(String name, String type) {
+
+        String firstChar = Character.toString(name.charAt(0));
+        String lastChar = Character.toString(name.charAt(name.length() - 1));
+        String secondLastChar = Character.toString(name.charAt(name.length() - 2));
+
+        if (type.equals("Jump")) {
+            return firstChar;
+        }
+
+        if (lastChar.equals("V")) {
+            if (secondLastChar.equals("B")) {
+                return "0";
+            }
+            return secondLastChar;
+        } else if (lastChar.equals("B")) {
+            return "0";
+        }
+        return lastChar;
+    }
+
+    public String typeFinder(String s) {
+        char firstChar = s.charAt(0);
+
+        if (isDigit(firstChar)) {
+            return "Jump";
+        } else {
+            if (s.contains("StSq") || s.contains("ChSq")) {
+                return "Step";
+            } else if (s.contains("Sp")) {
+                return "Spin";
+            } else {
+                System.out.println("The element name is still not valid. Please use ISU abbreviations.");
+            }
+        }
+
+        return "The element name is still not valid. Please use ISU abbreviations.";
+    }
 
     public boolean checkIfProperElement(String s) {
+
+        if (s.length() < 2) {
+            return false;
+        }
         char firstChar = s.charAt(0);
         char lastChar = s.charAt(s.length() - 1);
-        if (isDigit(firstChar) || isDigit(lastChar)) {
-            return true;
-        }
-        return false;
+        char secondChar = s.charAt(1);
+        return (isDigit(firstChar) || isDigit(lastChar)) && !isDigit(secondChar);
     }
 
+    // check if below or above a point!!!
     public boolean checkIfProperGOE(String str) {
-
-        if (str == "\d\d.\d\d")
-        if (Double.parseDouble(str));
+        try {
+            double d = Double.parseDouble(str);
+        } catch (NumberFormatException d) {
+            return false;
+        }
+        return true;
     }
 
+    //!!!
     public static String ordinal(int i) {
         String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
         switch (i % 100) {

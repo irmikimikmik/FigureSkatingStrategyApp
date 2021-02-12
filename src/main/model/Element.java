@@ -2,10 +2,10 @@ package model;
 
 public abstract class Element {
 
-    private String name;
-    private double basePoint;
-    private double goe;
-    private String type;
+    protected String name;
+    protected double basePoint;
+    protected double goe;
+    protected String type;
 
     public Element(String name, double basePoint, double goe, String type) {
         this.name = name;
@@ -45,10 +45,5 @@ public abstract class Element {
     public String getElementType() {
         return this.type;
     }
-
-
-    // something in regards to the order of the elements may be added
-    // a list of elements with their base values must be created in data folder
-    // also do you really need these getters and setters if you already declare all the fields in the constructor?
 
 }
