@@ -1,11 +1,9 @@
 package test;
 
-import model.Choreography;
 import model.Element;
 import model.Jump;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ElementTest {
@@ -14,7 +12,7 @@ public class ElementTest {
 
     @BeforeEach
     void runBefore() {
-        element = new Jump("3Lo", 5.20, 0.15, "Jump", 3);
+        element = new Jump("3Lo", 5.20, 0.15, "Jump", 3.0);
     }
 
     @Test
@@ -42,5 +40,4 @@ public class ElementTest {
         element.setElementType("Spin");
         assertEquals("Spin", element.getElementName());
     }
-
 }

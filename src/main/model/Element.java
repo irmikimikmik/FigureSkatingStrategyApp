@@ -54,4 +54,9 @@ public abstract class Element {
         return this.type;
     }
 
+
+    public abstract void setRotationOrLevel(double d);
+
+    public abstract double getRotationOrLevel();
+
 }
