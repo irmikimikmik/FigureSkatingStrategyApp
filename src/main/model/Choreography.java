@@ -91,7 +91,7 @@ public class Choreography {
         this.skatingSkillsComponent = f;
     }
 
-    // EFFECTS: gets the skating skills component of the choraography
+    // EFFECTS: gets the skating skills component of the choreography
     public double getSkatingSkillsComponent() {
         return this.skatingSkillsComponent;
     }
