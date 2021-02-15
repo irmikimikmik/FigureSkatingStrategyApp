@@ -25,6 +25,8 @@ public abstract class Element {
         return this.name;
     }
 
+    // there is no setBasePoint method because all the base points are already set in the csv files.
+
     // EFFECTS: returns the base point of the element
     public double getBasePoint() {
         return this.basePoint;
