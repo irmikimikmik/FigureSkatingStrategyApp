@@ -9,6 +9,11 @@ import java.util.Scanner;
 import static java.lang.Character.isDigit;
 
 // Strategy Determining application for Figure Skaters
+// !!!
+// I HAVE CODED THIS APPLICATION BY GETTING HELP FROM GOOGLE. I USED GOOGLE TO LEARN SWITCH STATEMENTS, PARSING
+//        METHODS, TRY CATCH CLAUSES, THROWING EXCEPTIONS IN METHODS, CREATING CSV DOCUMENTS, READING CSV
+//        DOCUMENTS AND MORE. If there was a certain cite that I have used for a certain code, I made sure
+//        that I have referenced it to avoid plagiarism.
 public class StrategyApp {
 
     private Choreography choreography;
@@ -26,7 +31,7 @@ public class StrategyApp {
                 true, 0.0);
         boolean keepGoing = true;
         String command;
-        input = new Scanner(System.in);
+        input = new Scanner(System.in); // code taken from TellerApp
 
         while (keepGoing) {
 
@@ -388,6 +393,8 @@ public class StrategyApp {
     }
 
     // EFFECTS: converts an integer from decimal the ordinal. For example: 1 to 1st.
+    // citations:
+    // https://stackoverflow.com/questions/6810336/is-there-a-way-in-java-to-convert-an-integer-to-its-ordinal-name
     private static String ordinal(int i) {
         String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
         switch (i % 100) {
