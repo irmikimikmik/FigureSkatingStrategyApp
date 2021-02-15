@@ -14,34 +14,40 @@ public abstract class Element {
         this.type = type;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the name of the element
     public void setElementName(String name) {
         this.name = name;
     }
 
+    // EFFECTS: returns the name of the element
     public String getElementName() {
         return this.name;
     }
 
-    public void setBasePoint(float f) {
-        this.basePoint = f;
-    }
-
+    // EFFECTS: returns the base point of the element
     public double getBasePoint() {
         return this.basePoint;
     }
 
-    public void addGOE(float f) {
+    // MODIFIES: this
+    // EFFECTS: adds to the GOE of the element
+    public void addGOE(double f) {
         this.goe = this.goe + f;
     }
 
+    // EFFECTS: returns the GOE of the element
     public double getGOE() {
         return this.goe;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the type of the element either as "Jump", "Spin" or "Step"
     public void setElementType(String type) {
         this.type = type;
     }
 
+    // EFFECTS: returns the type of the element
     public String getElementType() {
         return this.type;
     }

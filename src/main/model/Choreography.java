@@ -24,54 +24,79 @@ public class Choreography {
         this.listOfElements = new ArrayList<Element>();
     }
 
-    public void setDeductions(float deduction) {
+
+    // REQUIRES: a positive decimal
+    // MODIFIES: this
+    // EFFECTS: changes the number of deductions in the choreography
+    public void setDeductions(double deduction) {
         this.deductions = deduction;
     }
 
+    // EFFECTS: returns the number of deductions in the choreography
     public double getDeductions() {
         return this.deductions;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the skater category to either ladies (true) or men (false)
     public void setSkaterCategory(boolean b) {
         this.category = b;
     }
 
+    // EFFECTS: returns the category of the skater who presents the choreography
     public boolean getSkaterCategory() {
         return this.category;
     }
 
+    // REQUIRES: a positive integer
+    // MODIFIES: this
+    // EFFECTS: adds to the number of falls in the choreography
     public void addFalls(int i) {
         this.falls = this.falls + i;
     }
 
+    // EFFECTS: returns the number of falls in the choreography
     public int getFalls() {
         return this.falls;
     }
 
-    public void setDuration(float f) {
+
+    // REQUIRES: a positive decimal with one digit before and two digits after the decimal point
+    // MODIFIES: this
+    // EFFECTS: sets the duration of the choreography
+    public void setDuration(double f) {
         this.duration = f;
     }
 
+    // EFFECTS: returns the duration of the choreography
     public double getDuration() {
         return this.duration;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the type of the choreography to either short program (true) or free program (false)
     public void setType(boolean b) {
         this.type = b;
     }
 
+    // EFFECTS: returns the type of the choreography
     public boolean getType() {
         return this.type;
     }
 
-    public void setSkatingSkillsComponent(float f) {
+    // REQUIRES: a positive decimal with two digits before and after the decimal point
+    // MODIFIES: this
+    // EFFECTS: sets the skating skills component of the choreography
+    public void setSkatingSkillsComponent(double f) {
         this.skatingSkillsComponent = f;
     }
 
+    // EFFECTS: gets the skating skills component of the choraography
     public double getSkatingSkillsComponent() {
         return this.skatingSkillsComponent;
     }
 
+    // EFFECTS: returns the number of elements in the choreography
     public int size() {
         int result = 0;
         for (Element e : this.listOfElements) {
@@ -80,20 +105,15 @@ public class Choreography {
         return result;
     }
 
-
-    //!!!
+    // MODIFIES: this
+    // EFFECTS: adds a new element to the choreography
     public void addElement(Element e) {
         this.listOfElements.add(e);
     }
 
-//    public Element removeElement(){
-//        this.listOfElements.remove();
-//    }
+    // EFFECTS: returns the elements that are in the choreography so far
+    public List<Element> getListOfElements() {
+        return this.listOfElements;
+    }
 
-    // Write Specifications for the entire project!!!
-    // add constructors to step jmp
-
-    // deduction counter
-    // contains more than twice?
-    // is second half?
 }

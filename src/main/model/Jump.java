@@ -9,12 +9,15 @@ public class Jump extends Element {
         this.rotations = rotations;
     }
 
-    public void setRotations(float f) {
+    // REQUIRES: a positive decimal that is the half of an integer
+    // MODIFIES: this
+    // EFFECTS: sets the number of rotations of the jump
+    public void setRotations(double f) {
         this.rotations = f;
     }
 
+    // EFFECTS: returns the number of rotations of the jump
     public double getRotations() {
         return this.rotations;
     }
-
 }

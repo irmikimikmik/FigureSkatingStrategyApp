@@ -9,12 +9,14 @@ public class Step extends Element {
         this.level = level;
     }
 
-    // REQUIRES: A step element which is not a Choreo Sequence, so the element must be a Step Sequence
-    //!!!
+    // REQUIRES: a an integer from 0 to 4 (the letter B is considered to be Level 0 in the names of the elements)
+    // MODIFIES: this
+    // EFFECTS: sets the level of the step
     public void setLevel(int i) {
         this.level = i;
     }
 
+    // EFFECTS: returns the level of the step
     public int getLevel() {
         return this.level;
     }
