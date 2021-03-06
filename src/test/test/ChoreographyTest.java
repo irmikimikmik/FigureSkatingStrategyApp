@@ -1,8 +1,6 @@
 package test;
 
-import model.Choreography;
-import model.Element;
-import model.Jump;
+import model.*;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
@@ -81,4 +79,270 @@ public class ChoreographyTest {
 
     }
 
+    @Test
+    void testReturnTypeAsString() {
+        choreography.setType(true);
+        assertTrue(choreography.getType());
+        assertEquals("short", choreography.returnTypeAsString());
+
+        choreography.setType(false);
+        assertFalse(choreography.getType());
+        assertEquals("free", choreography.returnTypeAsString());
+    }
+
+    @Test
+    void testReturnCategoryAsString() {
+        choreography.setSkaterCategory(true);
+        assertTrue(choreography.getSkaterCategory());
+        assertEquals("ladies", choreography.returnCategoryAsString());
+
+        choreography.setSkaterCategory(false);
+        assertFalse(choreography.getSkaterCategory());
+        assertEquals("men", choreography.returnCategoryAsString());
+    }
+
+    @Test
+    void testDeductionCounter() {
+        assertEquals(0.0, choreography.deductionCounter(choreography.getFalls()));
+        choreography.addFalls(1);
+        assertEquals(0.5, choreography.deductionCounter(choreography.getFalls()));
+        choreography.addFalls(1);
+        assertEquals(1, choreography.deductionCounter(choreography.getFalls()));
+        choreography.addFalls(1);
+        assertEquals(2, choreography.deductionCounter(choreography.getFalls()));
+        choreography.addFalls(7);
+        assertEquals(9, choreography.deductionCounter(choreography.getFalls()));
+    }
+
+    @Test
+    void testIsEligibleChoreographyWithCorrectFreeProgram() {
+        Element element1 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element2 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element3 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element4 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element5 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element6 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element7 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+
+        Element element8 = new Step("StSq1", 1.80, 0.30, "Step", 1);
+        Element element9 = new Step("StSq1", 1.80, 0.30, "Step", 1);
+
+        Element element10 = new Spin("FCCoSp4", 3.50, -0.10, "Spin", 4);
+        Element element11 = new Spin("FCCoSp4", 3.50, -0.10, "Spin", 4);
+        Element element12 = new Spin("FCCoSp4", 3.50, -0.10, "Spin", 4);
+
+        choreography.setType(false);
+        choreography.addElement(element1);
+        choreography.addElement(element2);
+        choreography.addElement(element3);
+        choreography.addElement(element4);
+        choreography.addElement(element5);
+        choreography.addElement(element6);
+        choreography.addElement(element7);
+        choreography.addElement(element8);
+        choreography.addElement(element9);
+        choreography.addElement(element10);
+        choreography.addElement(element11);
+        choreography.addElement(element12);
+
+        assertTrue(choreography.isEligibleChoreography());
+
+    }
+
+    @Test
+    void testIsEligibleChoreographyWithWrongFreeProgram() {
+        Element element1 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element2 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element3 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element4 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element5 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element6 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element7 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element8 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+
+        Element element9 = new Step("StSq1", 1.80, 0.30, "Step", 1);
+
+        Element element10 = new Spin("FCCoSp4", 3.50, -0.10, "Spin", 4);
+        Element element11 = new Spin("FCCoSp4", 3.50, -0.10, "Spin", 4);
+        Element element12 = new Spin("FCCoSp4", 3.50, -0.10, "Spin", 4);
+
+        choreography.setType(false);
+        choreography.addElement(element1);
+        choreography.addElement(element2);
+        choreography.addElement(element3);
+        choreography.addElement(element4);
+        choreography.addElement(element5);
+        choreography.addElement(element6);
+        choreography.addElement(element7);
+        choreography.addElement(element8);
+        choreography.addElement(element9);
+        choreography.addElement(element10);
+        choreography.addElement(element11);
+        choreography.addElement(element12);
+
+        assertFalse(choreography.isEligibleChoreography());
+
+    }
+
+    @Test
+    void testIsEligibleChoreographyWithCorrectShortProgram() {
+        Element element1 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element2 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element3 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+
+        Element element4 = new Step("StSq1", 1.80, 0.30, "Step", 1);
+
+        Element element5 = new Spin("FCCoSp4", 3.50, -0.10, "Spin", 4);
+        Element element6 = new Spin("FCCoSp4", 3.50, -0.10, "Spin", 4);
+        Element element7 = new Spin("FCCoSp4", 3.50, -0.10, "Spin", 4);
+
+        choreography.setType(true);
+        choreography.addElement(element1);
+        choreography.addElement(element2);
+        choreography.addElement(element3);
+        choreography.addElement(element4);
+        choreography.addElement(element5);
+        choreography.addElement(element6);
+        choreography.addElement(element7);
+
+        assertTrue(choreography.isEligibleChoreography());
+
+    }
+
+    @Test
+    void testIsEligibleChoreographyWithWrongShortProgram() {
+        Element element1 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element2 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element3 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element element4 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+
+        Element element5 = new Spin("FCCoSp4", 3.50, -0.10, "Spin", 4);
+        Element element6 = new Spin("FCCoSp4", 3.50, -0.10, "Spin", 4);
+        Element element7 = new Spin("FCCoSp4", 3.50, -0.10, "Spin", 4);
+
+        choreography.setType(true);
+        choreography.addElement(element1);
+        choreography.addElement(element2);
+        choreography.addElement(element3);
+        choreography.addElement(element4);
+        choreography.addElement(element5);
+        choreography.addElement(element6);
+        choreography.addElement(element7);
+
+        assertFalse(choreography.isEligibleChoreography());
+
+    }
+
+    @Test
+    void testIsEligibleDurationShortProgram() {
+        choreography.setType(true);
+        choreography.setDuration(2.20);
+        assertFalse(choreography.isEligibleDuration());
+
+        choreography.setDuration(2.30);
+        assertTrue(choreography.isEligibleDuration());
+
+        choreography.setDuration(2.50);
+        assertTrue(choreography.isEligibleDuration());
+
+        choreography.setDuration(3.20);
+        assertFalse(choreography.isEligibleDuration());
+    }
+
+    @Test
+    void testIsEligibleDurationFreeProgram() {
+        choreography.setType(false);
+        choreography.setDuration(2.20);
+        assertFalse(choreography.isEligibleDuration());
+
+        choreography.setDuration(3.50);
+        assertTrue(choreography.isEligibleDuration());
+
+        choreography.setDuration(4.10);
+        assertTrue(choreography.isEligibleDuration());
+
+        choreography.setDuration(4.20);
+        assertFalse(choreography.isEligibleDuration());
+    }
+
+    @Test
+    void testDetermineSecondHalfElementsShortProgram() {
+        Element element1 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element2 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element3 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+
+        Element element4 = new Step("StSq1", 1.80, 0.00, "Step", 1);
+
+        Element element5 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element6 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element7 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+
+        choreography.setType(true);
+        choreography.addElement(element1);
+        choreography.addElement(element2);
+        choreography.addElement(element3);
+        choreography.addElement(element4);
+        choreography.addElement(element5);
+        choreography.addElement(element6);
+        choreography.addElement(element7);
+
+        assertTrue(choreography.getType());
+        choreography.determineSecondHalfElements();
+
+        assertEquals(element1.getGOE(), 0.00);
+        assertEquals(element2.getGOE(), 0.00);
+        assertEquals(element3.getGOE(), 0.00);
+        assertEquals(element4.getGOE(), 0.00);
+        assertEquals(element5.getGOE(), element5.getBasePoint()*1.1);
+        assertEquals(element6.getGOE(), element6.getBasePoint()*1.1);
+        assertEquals(element7.getGOE(), element7.getBasePoint()*1.1);
+    }
+
+    @Test
+    void testDetermineSecondHalfElementsFreeProgram() {
+        Element element1 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element2 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element3 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element4 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element5 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element6 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element7 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+
+        Element element8 = new Step("StSq1", 1.80, 0.00, "Step", 1);
+        Element element9 = new Step("StSq1", 1.80, 0.00, "Step", 1);
+
+        Element element10 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element11 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element12 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+
+        choreography.setType(false);
+        choreography.addElement(element1);
+        choreography.addElement(element2);
+        choreography.addElement(element3);
+        choreography.addElement(element4);
+        choreography.addElement(element5);
+        choreography.addElement(element6);
+        choreography.addElement(element7);
+        choreography.addElement(element8);
+        choreography.addElement(element9);
+        choreography.addElement(element10);
+        choreography.addElement(element11);
+        choreography.addElement(element12);
+
+        choreography.determineSecondHalfElements();
+
+        assertEquals(element1.getGOE(), 0.00);
+        assertEquals(element2.getGOE(), 0.00);
+        assertEquals(element3.getGOE(), 0.00);
+        assertEquals(element4.getGOE(), 0.00);
+        assertEquals(element5.getGOE(), 0.00);
+        assertEquals(element6.getGOE(), 0.00);
+        assertEquals(element7.getGOE(), element7.getBasePoint()*1.1);
+        assertEquals(element8.getGOE(), element8.getBasePoint()*1.1);
+        assertEquals(element9.getGOE(), element9.getBasePoint()*1.1);
+        assertEquals(element10.getGOE(), element10.getBasePoint()*1.1);
+        assertEquals(element11.getGOE(), element11.getBasePoint()*1.1);
+        assertEquals(element12.getGOE(), element12.getBasePoint()*1.1);
+
+    }
 }

@@ -9,11 +9,6 @@ import java.util.Scanner;
 import static java.lang.Character.isDigit;
 
 // Strategy Determining application for Figure Skaters
-// !!!
-// I HAVE CODED THIS APPLICATION BY GETTING HELP FROM GOOGLE. I USED GOOGLE TO LEARN SWITCH STATEMENTS, PARSING
-//        METHODS, TRY CATCH CLAUSES, THROWING EXCEPTIONS IN METHODS, CREATING CSV DOCUMENTS, READING CSV
-//        DOCUMENTS AND MORE. If there was a certain cite that I have used for a certain code, I made sure
-//        that I have referenced it to avoid plagiarism.
 public class StrategyApp {
 
     private Choreography choreography;
@@ -68,7 +63,6 @@ public class StrategyApp {
         System.out.println("\tTriple Toeloop : 3T");
         System.out.println("\tUnder-rotated Double Loop : 2Lo<");
         System.out.println("\tUnder-rotated and Edge Singe Lutz : 1Lz<e");
-        System.out.println("\tDouble Axel + Half Loop + Triple Flip: 2A + 1Eu + 3F");
         System.out.println("\tLevel 3 Step Sequence : StSq3");
         System.out.println("\tChoreography Sequence: ChSq1");
         System.out.println("\tLevel 4 Change Leg Combo Spin: CCoSp4");
@@ -79,7 +73,6 @@ public class StrategyApp {
 
     // EFFECTS: asks all the questions necessary to complete the prediction to the user.
     private void startQuestioning() {
-        categoryQuestion();
         typeQuestion();
 
         if (choreography.getType()) {
@@ -88,17 +81,10 @@ public class StrategyApp {
             System.out.println("Please type in all elements in order and according to the ISU abbreviations.");
             elementsQuestion(numOfElements);
         } else {
-            if (choreography.getSkaterCategory()) {
-                System.out.println("There must be 11 elements in your choreography.");
-                int numOfElements = 11;
-                System.out.println("Please type in all elements in order and according to the ISU abbreviations.");
-                elementsQuestion(numOfElements);
-            } else {
-                System.out.println("There must be 12 elements in your choreography.");
-                int numOfElements = 12;
-                System.out.println("Please type in all elements in order and according to the ISU abbreviations.");
-                elementsQuestion(numOfElements);
-            }
+            System.out.println("There must be 12 elements in your choreography.");
+            int numOfElements = 12;
+            System.out.println("Please type in all elements in order and according to the ISU abbreviations.");
+            elementsQuestion(numOfElements);
         }
 
         fallQuestion();
@@ -113,7 +99,6 @@ public class StrategyApp {
         String command = input.next();
 
         if (!checkIfProperFall(command)) {
-            command = "0";
             System.out.println("Please type a positive integer.");
             fallQuestion();
         }
@@ -192,24 +177,6 @@ public class StrategyApp {
     }
 
     // MODIFIES: choreography
-    // EFFECTS: asks the category of the skater and adds the info to the choreography
-    private void categoryQuestion() {
-        System.out.println("Please enter your category: 'ladies' or 'men'?");
-
-        String command = input.next();
-        command = command.toLowerCase();
-
-        if (command.equals("ladies")) {
-            choreography.setSkaterCategory(true);
-        } else if (command.equals("men")) {
-            choreography.setSkaterCategory(false);
-        } else {
-            System.out.println("Selection not valid... Please try again.");
-            categoryQuestion();
-        }
-    }
-
-    // MODIFIES: choreography
     // EFFECTS: asks the type of the choreography and adds the info to the choreography object
     private void typeQuestion() {
         System.out.println("Please enter the type of your choreography: 'short' or 'free'?");
@@ -228,7 +195,8 @@ public class StrategyApp {
     }
 
     // MODIFIES: choreography
-    // EFFECTS: asks the names and the GOEs of the elements one by one until necessary number of elements are met
+    // EFFECTS: asks the names and the GOEs of the elements one by one until necessary number of elements are met,
+    //          also handles the exception that comes from basePointFinder
     private void elementsQuestion(int i) {
 
         for (int x = 0; x < i; x++) {
@@ -295,7 +263,8 @@ public class StrategyApp {
         }
     }
 
-    // EFFECTS: reads the csv document containing base points and returns the base point of the given element
+    // EFFECTS: reads the csv document containing base points and returns the base point of the given element,
+    //          throws an exception if the element is not found
     // citations: https://www.javatpoint.com/how-to-read-csv-file-in-java and
     //            https://stackabuse.com/reading-and-writing-csvs-in-java/
     private double basePointFinder(String elementName) throws IOException {
@@ -320,7 +289,8 @@ public class StrategyApp {
         return 0.00;
     }
 
-    // EFFECTS: checks if the element can be found in the csv file containing all the names of the elements in skating
+    // EFFECTS: checks if the element can be found in the csv file containing all the names of the elements in skating,
+    //          also handles the exception that comes from basePointFinder
     private boolean checkIfProperElement(String elementName) {
         try {
             if (basePointFinder(elementName) == 0.0) {
@@ -412,6 +382,8 @@ public class StrategyApp {
 
         List<Element> elements = choreography.getListOfElements();
 
+        choreography.determineSecondHalfElements();
+
         double technicalPoints = 0;
         for (Element e : elements) {
             double basePoint = e.getBasePoint();
@@ -420,41 +392,31 @@ public class StrategyApp {
         }
 
         double skatingPoints = choreography.getSkatingSkillsComponent();
-        choreography.setDeductions(choreography.getFalls());
+        choreography.setDeductions(choreography.deductionCounter(choreography.getFalls()));
         double deductedPoints = choreography.getDeductions();
         double finalPoint = technicalPoints + skatingPoints - deductedPoints;
 
-        String type = returnTypeAsString();
-        String category = returnCategoryAsString();
+        String type = choreography.returnTypeAsString();
+        String category = choreography.returnCategoryAsString();
 
-        System.out.println("\n");
-        System.out.println("\tYour choreography matches the rules for " + category + " " + type
-                + " program according to the ISU rule book.");
+        if (choreography.isEligibleChoreography() && choreography.isEligibleDuration()) {
+            System.out.println("\tYour choreography matches the rules for " + category + " " + type
+                    + " program according to the ISU rule book.");
+        } else if (!choreography.isEligibleChoreography() && choreography.isEligibleDuration()) {
+            System.out.println("\tYour choreography DOESN'T MATCH the rules for " + category + " " + type
+                    + " program according to the ISU rule book due to incorrect arrangement of elements.");
+        } else if (choreography.isEligibleChoreography() && !choreography.isEligibleDuration()) {
+            System.out.println("\tYour choreography DOESN'T MATCH the rules for " + category + " " + type
+                    + " program according to the ISU rule book due to incorrect duration.");
+        } else {
+            System.out.println("\tYour choreography DOESN'T MATCH the rules for " + category + " " + type
+                    + " program according to the ISU rule book due to incorrect arrangement of elements and duration.");
+        }
+
         System.out.println("\tThe points you will get from this choreography is: " + String.format("%.2f", finalPoint));
         System.out.println("\tYou have " + String.format("%.2f", deductedPoints)
                 + " deductions. Your technical score is " + String.format("%.2f", technicalPoints)
                 + " and your skating skills component is " + String.format("%.2f", skatingPoints) + ".");
     }
 
-    // EFFECTS: returns "short" if type is true and "free" if type is false
-    private String returnTypeAsString() {
-        String type;
-        if (choreography.getType()) {
-            type = "short";
-        } else {
-            type = "free";
-        }
-        return type;
-    }
-
-    // EFFECTS: returns "ladies" if type is true and "men" if type is false
-    private String returnCategoryAsString() {
-        String category;
-        if (choreography.getSkaterCategory()) {
-            category = "ladies";
-        } else {
-            category = "men";
-        }
-        return category;
-    }
 }

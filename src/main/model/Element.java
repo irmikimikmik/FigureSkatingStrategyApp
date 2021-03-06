@@ -1,5 +1,7 @@
 package model;
 
+// This abtract class is about figure skating elements which are included in skaters' choreographies and which have
+//     different features like name, base point, GOE and type.
 public abstract class Element {
 
     protected String name;
@@ -53,7 +55,6 @@ public abstract class Element {
     public String getElementType() {
         return this.type;
     }
-
 
     public abstract void setRotationOrLevel(double d);
 

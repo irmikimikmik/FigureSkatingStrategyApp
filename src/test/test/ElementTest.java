@@ -17,7 +17,6 @@ public class ElementTest {
 
     @Test
     void testName() {
-        assertEquals("", element.getElementName());
         element.setElementName("3F");
         assertEquals("3F", element.getElementName());
     }
@@ -38,6 +37,6 @@ public class ElementTest {
     void testElementType() {
         assertEquals("Jump", element.getElementType());
         element.setElementType("Spin");
-        assertEquals("Spin", element.getElementName());
+        assertEquals("Spin", element.getElementType());
     }
 }

@@ -1,5 +1,7 @@
 package model;
 
+// This subclass of element is about a certain type of element which is Spins. Spins have very similar functionality to
+//      the elements class but in addition, we also consider the level of a spin.
 public class Spin extends Element {
 
     private double level;
