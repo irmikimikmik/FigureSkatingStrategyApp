@@ -1,10 +1,12 @@
-package persistence;
+package test;
 
 import model.Choreography;
 import model.Element;
 import model.Jump;
 import model.Spin;
 import org.junit.jupiter.api.Test;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;

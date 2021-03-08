@@ -1,4 +1,4 @@
-package persistence;
+package test;
 
 import model.Element;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -18,6 +18,7 @@ public class ElementTest {
 
     @Test
     void testName() {
+        assertEquals("3Lo", element.getElementName());
         element.setElementName("3F");
         assertEquals("3F", element.getElementName());
     }
@@ -43,9 +44,7 @@ public class ElementTest {
 
     @Test
     void testToJson() {
-
         JSONObject jsonElement = element.toJson();
-
         assertEquals(jsonElement.get("name"), element.getElementName());
         assertEquals(jsonElement.get("basePoint"), element.getBasePoint());
         assertEquals(jsonElement.get("type"), element.getElementType());

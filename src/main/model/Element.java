@@ -62,14 +62,6 @@ public abstract class Element implements Writable {
     public abstract void setRotationOrLevel(double d);
 
     public abstract double getRotationOrLevel();
-
-    // EFFECTS: converts an Element object to a JSONObject
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-        json.put("name", name);
-        json.put("basePoint", basePoint);
-        json.put("goe", goe);
-        json.put("type", type);
-        return json;
-    }
+    
+    public abstract JSONObject toJson();
 }

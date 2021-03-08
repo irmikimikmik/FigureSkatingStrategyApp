@@ -1,8 +1,9 @@
-package persistence;
+package test;
 
 import model.Choreography;
 import model.Element;
 import org.junit.jupiter.api.Test;
+import persistence.JsonReader;
 
 import java.io.IOException;
 import java.util.List;
