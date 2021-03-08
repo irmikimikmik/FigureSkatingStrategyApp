@@ -1,11 +1,18 @@
 {
-  "duration": 0,
-  "falls": 0,
+  "duration": 2.4000000953674316,
+  "falls": 1,
   "elements": [
+    {
+      "name": "3T",
+      "basePoint": 4.2,
+      "goe": 0,
+      "type": "Jump",
+      "rotations": 3
+    },
     {
       "name": "3Lo",
       "basePoint": 4.9,
-      "goe": 0,
+      "goe": 0.03,
       "type": "Jump",
       "rotations": 3
     },
@@ -13,13 +20,19 @@
       "level": 3,
       "name": "FSSp3",
       "basePoint": 2.6,
-      "goe": 0,
+      "goe": -0.03,
       "type": "Spin"
+    },
+    {
+      "level": 2,
+      "name": "StSq2",
+      "basePoint": 2.6,
+      "goe": 0,
+      "type": "Step"
     }
   ],
   "name": "My choreography",
   "deductions": 0,
-  "category": true,
   "type": true,
-  "skatingSkillsComponent": 0
+  "skatingSkillsComponent": 33.88999938964844
 }

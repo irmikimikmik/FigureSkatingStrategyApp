@@ -45,9 +45,11 @@ class JsonReaderTest extends JsonTest {
             Choreography ch = reader.read();
             assertEquals("My choreography", ch.getChoreographyName());
             List<Element> elements = ch.getListOfElements();
-            assertEquals(2, ch.size());
-            checkElement("3Lo", 4.90, 0.00, "Jump", elements.get(0));
-            checkElement("FSSp3", 2.6, 0.00, "Spin", elements.get(1));
+            assertEquals(4, ch.size());
+            checkElement("3T", 4.20, 0.00, "Jump", elements.get(0));
+            checkElement("3Lo", 4.9, 0.03, "Jump", elements.get(1));
+            checkElement("FSSp3", 2.6, -0.03, "Spin", elements.get(2));
+            checkElement("StSq2", 2.6, 0.00, "Step", elements.get(3));
         } catch (IOException e) {
             fail("Couldn't read from file");
         }

@@ -44,6 +44,13 @@ public class ChoreographyTest {
     }
 
     @Test
+    void testName() {
+        assertEquals("My choreography", choreography.getChoreographyName());
+        choreography.setChoreographyName("Hi");
+        assertEquals("Hi", choreography.getChoreographyName());
+    }
+
+    @Test
     void testDuration() {
         assertEquals(0.00, choreography.getDuration());
         choreography.setDuration(3.15);
@@ -417,5 +424,36 @@ public class ChoreographyTest {
         JSONArray jsonElements = choreography.elementsToJson();
 
         assertEquals(jsonElements.length(), choreography.size());
+    }
+
+    @Test
+    void testAddElement() {
+
+        assertEquals(choreography.size(), 0);
+
+        Element element1 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element2 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element3 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+
+        Element element4 = new Step("StSq1", 1.80, 0.00, "Step", 1);
+
+        Element element5 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element6 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element7 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+
+        choreography.setType(true);
+        choreography.addElement(element1);
+        choreography.addElement(element2);
+        choreography.addElement(element3);
+        choreography.addElement(element4);
+        choreography.addElement(element5);
+        choreography.addElement(element6);
+        choreography.addElement(element7);
+
+        List<Element> elements = choreography.getListOfElements();
+
+        assertEquals(elements.get(0), element1);
+        assertEquals(elements.get(3), element4);
+        assertEquals(elements.get(5), element6);
     }
 }

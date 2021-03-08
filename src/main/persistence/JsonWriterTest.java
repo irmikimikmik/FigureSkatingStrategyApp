@@ -60,6 +60,7 @@ class JsonWriterTest extends JsonTest {
                     true, 0.0, new ArrayList<>());
             ch.addElement(new Jump("3Lo", 4.90, 0.00, "Jump", 3));
             ch.addElement(new Spin("FSSp3", 2.60, 0.00, "Spin", 3));
+            ch.addElement(new Spin("StSq2", 2.60, 0.00, "Step", 2));
             JsonWriter writer = new JsonWriter("./data/testWriterGeneralChoreography.json");
             writer.open();
             writer.write(ch);
@@ -69,9 +70,10 @@ class JsonWriterTest extends JsonTest {
             ch = reader.read();
             assertEquals("My choreography", ch.getChoreographyName());
             List<Element> elements = ch.getListOfElements();
-            assertEquals(2, elements.size());
+            assertEquals(3, elements.size());
             checkElement("3Lo", 4.90, 0.00, "Jump", elements.get(0));
             checkElement("FSSp3", 2.60, 0.00, "Spin", elements.get(1));
+            checkElement("StSq2", 2.60, 0.00, "Step", elements.get(2));
 
         } catch (IOException e) {
             fail("Exception should not have been thrown");

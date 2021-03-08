@@ -15,6 +15,13 @@
             "basePoint": 2.6,
             "goe": 0,
             "type": "Spin"
+        },
+        {
+            "level": 2,
+            "name": "StSq2",
+            "basePoint": 2.6,
+            "goe": 0,
+            "type": "Step"
         }
     ],
     "name": "My choreography",

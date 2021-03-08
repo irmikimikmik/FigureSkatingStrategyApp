@@ -315,7 +315,8 @@ public class StrategyApp {
     //            https://stackabuse.com/reading-and-writing-csvs-in-java/
     private double basePointFinder(String elementName) throws IOException {
 
-        File f = new File("/Users/irmakbayir/Desktop/project_w1q0i/src/main/data/AllBaseValues.csv");
+
+        File f = new File("/Users/irmakbayir/Desktop/project_w1q0i/data/AllBaseValues.csv");
         FileReader fr = new FileReader(f);
         BufferedReader br = new BufferedReader(fr);
 
