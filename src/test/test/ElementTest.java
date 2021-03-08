@@ -2,6 +2,7 @@ package test;
 
 import model.Element;
 import model.Jump;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,5 +39,17 @@ public class ElementTest {
         assertEquals("Jump", element.getElementType());
         element.setElementType("Spin");
         assertEquals("Spin", element.getElementType());
+    }
+
+    @Test
+    void testToJson() {
+
+        JSONObject jsonElement = element.toJson();
+
+        assertEquals(jsonElement.get("name"), element.getElementName());
+        assertEquals(jsonElement.get("basePoint"), element.getBasePoint());
+        assertEquals(jsonElement.get("type"), element.getElementType());
+        assertEquals(jsonElement.get("goe"), element.getGOE());
+
     }
 }

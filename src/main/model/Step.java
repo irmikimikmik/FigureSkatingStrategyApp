@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 // This subclass of element is about a certain type of element which is Steps. Steps have very similar functionality to
 //      the elements class but in addition, we also consider the level of a step.
 public class Step extends Element {
@@ -21,6 +23,18 @@ public class Step extends Element {
     // EFFECTS: returns the level of the step
     public double getRotationOrLevel() {
         return this.level;
+    }
+
+    // EFFECTS: converts a Step object to a JSONObject
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("basePoint", basePoint);
+        json.put("goe", goe);
+        json.put("type", type);
+        json.put("level", level);
+        return json;
     }
 
 }

@@ -1,9 +1,12 @@
 package test;
 
 import model.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,8 +24,8 @@ public class ChoreographyTest {
 
     @BeforeEach
     void runBefore() {
-        choreography = new Choreography(0.0,
-            true, 0, 0.00, true, 00.00);
+        choreography = new Choreography("My choreography", 0.0, 0, 0.0,
+                true, 0.0, new ArrayList<>());
         element = new Jump("3F", 5.20, 0.15, "Jump", 3);
     }
 
@@ -31,13 +34,6 @@ public class ChoreographyTest {
         assertEquals(0.0, choreography.getDeductions());
         choreography.setDeductions(1.5);
         assertEquals(1.5, choreography.getDeductions());
-    }
-
-    @Test
-    void testCategory() {
-        assertTrue(choreography.getSkaterCategory());
-        choreography.setSkaterCategory(false);
-        assertFalse(choreography.getSkaterCategory());
     }
 
     @Test
@@ -88,17 +84,6 @@ public class ChoreographyTest {
         choreography.setType(false);
         assertFalse(choreography.getType());
         assertEquals("free", choreography.returnTypeAsString());
-    }
-
-    @Test
-    void testReturnCategoryAsString() {
-        choreography.setSkaterCategory(true);
-        assertTrue(choreography.getSkaterCategory());
-        assertEquals("ladies", choreography.returnCategoryAsString());
-
-        choreography.setSkaterCategory(false);
-        assertFalse(choreography.getSkaterCategory());
-        assertEquals("men", choreography.returnCategoryAsString());
     }
 
     @Test
@@ -266,7 +251,7 @@ public class ChoreographyTest {
     }
 
     @Test
-    void testDetermineSecondHalfElementsShortProgram() {
+    void testDetermineSecondHalfElementsShortProgramWithEnoughElements() {
         Element element1 = new Jump("3F", 5.20, 0.00, "Jump", 3);
         Element element2 = new Jump("3F", 5.20, 0.00, "Jump", 3);
         Element element3 = new Jump("3F", 5.20, 0.00, "Jump", 3);
@@ -297,6 +282,34 @@ public class ChoreographyTest {
         assertEquals(element6.getGOE(), element6.getBasePoint()*1.1);
         assertEquals(element7.getGOE(), element7.getBasePoint()*1.1);
     }
+
+    @Test
+    void testDetermineSecondHalfElementsShortProgramWithNotEnoughElements() {
+        Element element1 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element2 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+
+        Element element4 = new Step("StSq1", 1.80, 0.00, "Step", 1);
+
+        Element element6 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element7 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+
+        choreography.setType(true);
+        choreography.addElement(element1);
+        choreography.addElement(element2);
+        choreography.addElement(element4);
+        choreography.addElement(element6);
+        choreography.addElement(element7);
+
+        assertTrue(choreography.getType());
+        choreography.determineSecondHalfElements();
+
+        assertEquals(element1.getGOE(), 0.00);
+        assertEquals(element2.getGOE(), 0.00);
+        assertEquals(element4.getGOE(), 0.00);
+        assertEquals(element6.getGOE(), 0.00);
+        assertEquals(element7.getGOE(), 0.00);
+    }
+
 
     @Test
     void testDetermineSecondHalfElementsFreeProgram() {
@@ -344,5 +357,65 @@ public class ChoreographyTest {
         assertEquals(element11.getGOE(), element11.getBasePoint()*1.1);
         assertEquals(element12.getGOE(), element12.getBasePoint()*1.1);
 
+    }
+
+    @Test
+    void testToJson() {
+
+        Element element1 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element2 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element3 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+
+        Element element4 = new Step("StSq1", 1.80, 0.00, "Step", 1);
+
+        Element element5 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element6 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element7 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+
+        choreography.setType(true);
+        choreography.addElement(element1);
+        choreography.addElement(element2);
+        choreography.addElement(element3);
+        choreography.addElement(element4);
+        choreography.addElement(element5);
+        choreography.addElement(element6);
+        choreography.addElement(element7);
+
+        JSONObject jsonChoreography = choreography.toJson();
+
+        assertEquals(jsonChoreography.get("name"), choreography.getChoreographyName());
+        assertEquals(jsonChoreography.get("deductions"), choreography.getDeductions());
+        assertEquals(jsonChoreography.get("falls"), choreography.getFalls());
+        assertEquals(jsonChoreography.get("duration"), choreography.getDuration());
+        assertEquals(jsonChoreography.get("type"), choreography.getType());
+        assertEquals(jsonChoreography.get("skatingSkillsComponent"), choreography.getSkatingSkillsComponent());
+
+    }
+
+    @Test
+    void testElementsToJson() {
+
+        Element element1 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element2 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+        Element element3 = new Jump("3F", 5.20, 0.00, "Jump", 3);
+
+        Element element4 = new Step("StSq1", 1.80, 0.00, "Step", 1);
+
+        Element element5 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element6 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element7 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+
+        choreography.setType(true);
+        choreography.addElement(element1);
+        choreography.addElement(element2);
+        choreography.addElement(element3);
+        choreography.addElement(element4);
+        choreography.addElement(element5);
+        choreography.addElement(element6);
+        choreography.addElement(element7);
+
+        JSONArray jsonElements = choreography.elementsToJson();
+
+        assertEquals(jsonElements.length(), choreography.size());
     }
 }

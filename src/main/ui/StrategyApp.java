@@ -1,8 +1,11 @@
 package ui;
 
 import model.*;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,85 +14,111 @@ import static java.lang.Character.isDigit;
 // Strategy Determining application for Figure Skaters
 public class StrategyApp {
 
+    private static final String JSON_STORE = "./data/choreography.json";
     private Choreography choreography;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the Strategy Application
     public StrategyApp() {
+        this.choreography = new Choreography("My choreography", 0.0, 0, 0.0,
+                true, 0.0, new ArrayList<>());
+        this.choreography.setChoreographyName("My choreography");
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        input = new Scanner(System.in); // code taken from TellerApp
         runStrategy();
     }
 
     // EFFECTS: depending on the input from the user, proceeds to start to prediction or quits.
     private void runStrategy() {
 
-        choreography = new Choreography(0.0, true, 0, 0.0,
-                true, 0.0);
         boolean keepGoing = true;
         String command;
-        input = new Scanner(System.in); // code taken from TellerApp
+        input = new Scanner(System.in);
+
+        System.out.println("\nLets predict your competition score!");
+        System.out.println("\nWe have to understand what you plan to do in your choreography first. Please make sure"
+                + " that you fill out every section IN ORDER before asking for an accurate result.");
 
         while (keepGoing) {
-
-            welcomeMessage();
-            command = input.next().toLowerCase();
-
+            mainMenu();
+            command = input.next();
+            command = command.toLowerCase();
+            
             if (command.equals("q")) {
-                System.out.println("\nThe prediction has ended.");
                 keepGoing = false;
-            } else if (command.equals("s")) {
-                startQuestioning();
-                calculate();
-                System.out.println("\nThe prediction has ended. Please press 's' to restart and 'q' to quit.");
-
-                command = input.next().toLowerCase();
-
-                if (command.equals("s")) {
-                    runStrategy();
-                }
-
-                keepGoing = false;
+            } else {
+                processCommand(command);
             }
         }
+        System.out.println("\nThe prediction has ended. Goodbye!");
     }
 
-
-    // EFFECTS: prints out the welcome message
-    private void welcomeMessage() {
-        System.out.println("\nLets predict your competition score!");
-        System.out.println("\nNOTE: Please use the ISU abbreviations for all elements.");
-        System.out.println("ISU abbreviations can be found here: https://www.isu.org/inside-isu/rules-regulations/"
-                + "isu-congresses/17142-isu-communication-2168/file.");
-        System.out.println("\nExamples of abbreviations:");
-        System.out.println("\tTriple Toeloop : 3T");
-        System.out.println("\tUnder-rotated Double Loop : 2Lo<");
-        System.out.println("\tUnder-rotated and Edge Singe Lutz : 1Lz<e");
-        System.out.println("\tLevel 3 Step Sequence : StSq3");
-        System.out.println("\tChoreography Sequence: ChSq1");
-        System.out.println("\tLevel 4 Change Leg Combo Spin: CCoSp4");
-        System.out.println("\tLevel 1 Layback Spin: LSp1");
-        System.out.println("\tLevel Base Flying Upright Spin with Volume: FUSpBV");
-        System.out.println("\nPress 's' to start. Press 'q' to quit.");
-    }
-
-    // EFFECTS: asks all the questions necessary to complete the prediction to the user.
-    private void startQuestioning() {
-        typeQuestion();
-
-        if (choreography.getType()) {
-            System.out.println("There must be 7 elements in your choreography.");
-            int numOfElements = 7;
-            System.out.println("Please type in all elements in order and according to the ISU abbreviations.");
-            elementsQuestion(numOfElements);
-        } else {
-            System.out.println("There must be 12 elements in your choreography.");
-            int numOfElements = 12;
-            System.out.println("Please type in all elements in order and according to the ISU abbreviations.");
-            elementsQuestion(numOfElements);
+    // taken from JSONSerializationDemo: https://github.com/stleary/JSON-java.git
+    // EFFECTS: saves the choreography to file
+    private void saveChoreography() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(choreography);
+            jsonWriter.close();
+            System.out.println("Saved " + choreography.getChoreographyName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
         }
+    }
 
-        fallQuestion();
-        durationQuestion();
-        skatingSkillsQuestion();
+    // taken from JSONSerializationDemo: https://github.com/stleary/JSON-java.git
+    // MODIFIES: this
+    // EFFECTS: loads choreography from file
+    private void loadChoreography() {
+        try {
+            choreography = jsonReader.read();
+            System.out.println("Loaded " + choreography.getChoreographyName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
+    // EFFECTS: prints out the main menu message
+    private void mainMenu() {
+        System.out.println("\t1- t --> type of choreography");
+        System.out.println("\t2- e --> the elements in choreography");
+        System.out.println("\t3- f --> the number of falls in choreography");
+        System.out.println("\t4- d --> duration of choreography");
+        System.out.println("\t5- p --> skating skills component of choreography");
+        System.out.println("\t6- c --> CALCULATE!!!");
+        System.out.println("\n");
+        System.out.println("\tl --> load a previously saved choreography");
+        System.out.println("\ts --> save your choreography");
+        System.out.println("\tq --> quit");
+    }
+
+    // MODIFIES: this
+    // EFFECTS: processes user command
+    private void processCommand(String command) {
+        if ("t".equals(command)) {
+            typeQuestion();
+        } else if ("e".equals(command)) {
+            if (choreography.getType()) {
+                elementsQuestion(7);
+            } else {
+                elementsQuestion(12);
+            }
+        } else if ("f".equals(command)) {
+            fallQuestion();
+        } else if ("d".equals(command)) {
+            durationQuestion();
+        } else if ("p".equals(command)) {
+            skatingSkillsQuestion();
+        } else if ("c".equals(command)) {
+            calculate();
+        } else if ("l".equals(command)) {
+            loadChoreography();
+        } else if ("s".equals(command)) {
+            saveChoreography();
+        }
     }
 
     // MODIFIES: choreography
@@ -179,6 +208,7 @@ public class StrategyApp {
     // MODIFIES: choreography
     // EFFECTS: asks the type of the choreography and adds the info to the choreography object
     private void typeQuestion() {
+
         System.out.println("Please enter the type of your choreography: 'short' or 'free'?");
 
         String command = input.next();
@@ -186,8 +216,10 @@ public class StrategyApp {
 
         if (command.equals("short")) {
             choreography.setType(true);
+            System.out.println("There must be 7 elements in your choreography.");
         } else if (command.equals("free")) {
             choreography.setType(false);
+            System.out.println("There must be 12 elements in your choreography.");
         } else {
             System.out.println("Selection not valid... Please try again.");
             typeQuestion();
@@ -199,16 +231,15 @@ public class StrategyApp {
     //          also handles the exception that comes from basePointFinder
     private void elementsQuestion(int i) {
 
-        for (int x = 0; x < i; x++) {
+        elementMessage();
 
+        for (int x = 0; x < i; x++) {
             System.out.println(ordinal(x + 1) + " element: ");
             String elementName = input.next();
-
             while (!checkIfProperElement(elementName)) {
                 System.out.println("Please enter valid elements that are either spins, steps or jumps.");
                 elementName = input.next();
             }
-
             double elementGOE = Double.parseDouble(askGOE());
             String elementType = typeFinder(elementName);
             int rotationOrLevel = Integer.parseInt(rotationOrLevelFinder(elementName, elementType));
@@ -222,6 +253,21 @@ public class StrategyApp {
 
             createAndAddElement(elementType, elementName, elementBasePoint, elementGOE, rotationOrLevel);
         }
+    }
+
+    private void elementMessage() {
+        System.out.println("\nNOTE: Please use the ISU abbreviations for all elements.");
+        System.out.println("ISU abbreviations can be found here: https://www.isu.org/inside-isu/rules-regulations/"
+                + "isu-congresses/17142-isu-communication-2168/file.");
+        System.out.println("\nExamples of abbreviations:");
+        System.out.println("\tTriple Toeloop : 3T");
+        System.out.println("\tUnder-rotated Double Loop : 2Lo<");
+        System.out.println("\tUnder-rotated and Edge Singe Lutz : 1Lz<e");
+        System.out.println("\tLevel 3 Step Sequence : StSq3");
+        System.out.println("\tChoreography Sequence: ChSq1");
+        System.out.println("\tLevel 4 Change Leg Combo Spin: CCoSp4");
+        System.out.println("\tLevel 1 Layback Spin: LSp1");
+        System.out.println("\tLevel Base Flying Upright Spin with Volume: FUSpBV");
     }
 
     // MODIFIES: choreography
@@ -381,7 +427,6 @@ public class StrategyApp {
     private void calculate() {
 
         List<Element> elements = choreography.getListOfElements();
-
         choreography.determineSecondHalfElements();
 
         double technicalPoints = 0;
@@ -397,26 +442,29 @@ public class StrategyApp {
         double finalPoint = technicalPoints + skatingPoints - deductedPoints;
 
         String type = choreography.returnTypeAsString();
-        String category = choreography.returnCategoryAsString();
-
-        if (choreography.isEligibleChoreography() && choreography.isEligibleDuration()) {
-            System.out.println("\tYour choreography matches the rules for " + category + " " + type
-                    + " program according to the ISU rule book.");
-        } else if (!choreography.isEligibleChoreography() && choreography.isEligibleDuration()) {
-            System.out.println("\tYour choreography DOESN'T MATCH the rules for " + category + " " + type
-                    + " program according to the ISU rule book due to incorrect arrangement of elements.");
-        } else if (choreography.isEligibleChoreography() && !choreography.isEligibleDuration()) {
-            System.out.println("\tYour choreography DOESN'T MATCH the rules for " + category + " " + type
-                    + " program according to the ISU rule book due to incorrect duration.");
-        } else {
-            System.out.println("\tYour choreography DOESN'T MATCH the rules for " + category + " " + type
-                    + " program according to the ISU rule book due to incorrect arrangement of elements and duration.");
-        }
+        printOutEligibility(type);
 
         System.out.println("\tThe points you will get from this choreography is: " + String.format("%.2f", finalPoint));
         System.out.println("\tYou have " + String.format("%.2f", deductedPoints)
                 + " deductions. Your technical score is " + String.format("%.2f", technicalPoints)
                 + " and your skating skills component is " + String.format("%.2f", skatingPoints) + ".");
+        System.out.println("\n");
+    }
+
+    private void printOutEligibility(String type) {
+        if (choreography.isEligibleChoreography() && choreography.isEligibleDuration()) {
+            System.out.println("\tYour choreography matches the rules of ISU rule book's " + type
+                    + " program definition.");
+        } else if (!choreography.isEligibleChoreography() && choreography.isEligibleDuration()) {
+            System.out.println("\tYour choreography DOES NOT match the rules of ISU rule book's " + type
+                    + " program definition due to incorrect arrangement of elements.");
+        } else if (choreography.isEligibleChoreography() && !choreography.isEligibleDuration()) {
+            System.out.println("\tYour choreography DOES NOT match the rules of ISU rule book's " + type
+                    + " program definition due to incorrect duration.");
+        } else {
+            System.out.println("\tYour choreography DOES NOT match the rules of ISU rule book's " + type
+                    + " program definition due to incorrect arrangement of elements and duration.");
+        }
     }
 
 }

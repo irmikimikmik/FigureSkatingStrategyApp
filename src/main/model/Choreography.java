@@ -1,31 +1,45 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 // This class is about figure skating choreographies which consist of a list of elements and which have different
-//     features like deductions, category, falls, duration, type and skatingSkillsComponent.
-public class Choreography {
+//     features like deductions, falls, duration, type and skatingSkillsComponent.
+public class Choreography implements Writable {
 
+    private String choreographyName;
     private double deductions;
-    private boolean category; //true is ladies, false is men
     private int falls;
     private double duration;
     private boolean type; //true is short program, false is free program
     private double skatingSkillsComponent;
     private List<Element> listOfElements;
 
-    public Choreography(double deductions, boolean category, int falls,
-                        double duration, boolean type, double sscomponent) {
+    public Choreography(String choreographyName, double deductions, int falls,
+                        double duration, boolean type, double component, List<Element> elementsList) {
+        this.choreographyName = choreographyName;
         this.deductions = deductions;
-        this.category = category;
         this.falls = falls;
         this.duration = duration;
         this.type = type;
-        this.skatingSkillsComponent = sscomponent;
-        this.listOfElements = new ArrayList<>();
+        this.skatingSkillsComponent = component;
+        this.listOfElements = elementsList;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the name of the choreography
+    public void setChoreographyName(String s) {
+        this.choreographyName = s;
+    }
+
+    // EFFECTS: returns the name of the choreography
+    public String getChoreographyName() {
+        return this.choreographyName;
+    }
 
     // REQUIRES: a positive decimal
     // MODIFIES: this
@@ -37,17 +51,6 @@ public class Choreography {
     // EFFECTS: returns the number of deductions in the choreography
     public double getDeductions() {
         return this.deductions;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: sets the skater category to either ladies (true) or men (false)
-    public void setSkaterCategory(boolean b) {
-        this.category = b;
-    }
-
-    // EFFECTS: returns the category of the skater who presents the choreography
-    public boolean getSkaterCategory() {
-        return this.category;
     }
 
     // REQUIRES: a positive integer
@@ -129,17 +132,6 @@ public class Choreography {
         return type;
     }
 
-    // EFFECTS: returns "ladies" if type is true and "men" if type is false
-    public String returnCategoryAsString() {
-        String category;
-        if (getSkaterCategory()) {
-            category = "ladies";
-        } else {
-            category = "men";
-        }
-        return category;
-    }
-
     // EFFECTS: calculates the deductions by considering the falls according to the ISU rule book.
     public double deductionCounter(int falls) {
         if (falls > 2) {
@@ -188,29 +180,21 @@ public class Choreography {
     //          values by 1*1 to add to their GOE as that's what the ISU rule book suggests
     public void determineSecondHalfElements() {
 
+        if (listOfElements.size() <= 6) {
+            System.out.println("You don't have enough elements in your choreography to calculate!!");
+            return;
+        }
+
         if (type) {
-            Element fifthElement = listOfElements.get(4);
-            Element sixthElement = listOfElements.get(5);
-            Element seventhElement =  listOfElements.get(6);
-
-            fifthElement.addGOE(fifthElement.getBasePoint() * 1.1);
-            sixthElement.addGOE(sixthElement.getBasePoint() * 1.1);
-            seventhElement.addGOE(seventhElement.getBasePoint() * 1.1);
-
+            for (int i = 4; i <= 6; i++) {
+                Element e = listOfElements.get(i);
+                e.addGOE(e.getBasePoint() * 1.1);
+            }
         } else {
-            Element seventhElement = listOfElements.get(6);
-            Element eighthElement = listOfElements.get(7);
-            Element ninthElement = listOfElements.get(8);
-            Element tenthElement = listOfElements.get(9);
-            Element eleventhElement = listOfElements.get(10);
-            Element twelfthElement = listOfElements.get(11);
-
-            seventhElement.addGOE(seventhElement.getBasePoint() * 1.1);
-            eighthElement.addGOE(eighthElement.getBasePoint() * 1.1);
-            ninthElement.addGOE(ninthElement.getBasePoint() * 1.1);
-            tenthElement.addGOE(tenthElement.getBasePoint() * 1.1);
-            eleventhElement.addGOE(eleventhElement.getBasePoint() * 1.1);
-            twelfthElement.addGOE(twelfthElement.getBasePoint() * 1.1);
+            for (int i = 6; i <= 11; i++) {
+                Element e = listOfElements.get(i);
+                e.addGOE(e.getBasePoint() * 1.1);
+            }
         }
     }
 
@@ -221,5 +205,29 @@ public class Choreography {
         } else {
             return ((3.50 <= this.duration) && (this.duration <= 4.10));
         }
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", choreographyName);
+        json.put("deductions", deductions);
+        json.put("falls", falls);
+        json.put("duration", duration);
+        json.put("type", type);
+        json.put("skatingSkillsComponent", skatingSkillsComponent);
+        json.put("elements", elementsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns elements in this choreography as a JSON array
+    public JSONArray elementsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Element e : listOfElements) {
+            jsonArray.put(e.toJson());
+        }
+
+        return jsonArray;
     }
 }

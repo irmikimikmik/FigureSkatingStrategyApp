@@ -1,8 +1,11 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 // This abtract class is about figure skating elements which are included in skaters' choreographies and which have
 //     different features like name, base point, GOE and type.
-public abstract class Element {
+public abstract class Element implements Writable {
 
     protected String name;
     protected double basePoint;
@@ -60,4 +63,13 @@ public abstract class Element {
 
     public abstract double getRotationOrLevel();
 
+    // EFFECTS: converts an Element object to a JSONObject
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("basePoint", basePoint);
+        json.put("goe", goe);
+        json.put("type", type);
+        return json;
+    }
 }

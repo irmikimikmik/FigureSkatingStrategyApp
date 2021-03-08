@@ -67,8 +67,6 @@ should make adjustments or compete with the choreography they have.
 think of the element.
 - As a user, I would like to see if the duration of my choreography fits the standards of the Ice Skating Union rule
 book.
-- As a user, I want to be able to save my choreography and score to file.
-- As a user, I want to be able to be able to load my choreography and score from file.
-- As a user, when I select the quit option, I want to be reminded to save my choreography to file and have the option
-to do so or not.
+- As a user, I want to be able to save my choreography to file.
+- As a user, I want to be able to be able to load my choreography from file.
 - As a user, when I start the application, I want to be given the option to load my choreography from file.

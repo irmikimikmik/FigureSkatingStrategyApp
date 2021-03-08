@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 // This subclass of element is about a certain type of element which is Jumps. Jumps have very similar functionality to
 //      the elements class but in addition, we also consider the rotation of a jump.
 public class Jump extends Element {
@@ -21,5 +23,17 @@ public class Jump extends Element {
     // EFFECTS: returns the number of rotations of the jump
     public double getRotationOrLevel() {
         return this.rotations;
+    }
+
+    // EFFECTS: converts a Jump object to a JSONObject
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("basePoint", basePoint);
+        json.put("goe", goe);
+        json.put("type", type);
+        json.put("rotations", rotations);
+        return json;
     }
 }
