@@ -4,6 +4,7 @@ import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 import static java.lang.Character.isDigit;
 
 // Strategy Determining application for Figure Skaters
-public class StrategyApp {
+public class StrategyApp extends JFrame {
 
     private static final String JSON_STORE = "./data/choreography.json";
     private Choreography choreography;
@@ -316,7 +317,7 @@ public class StrategyApp {
     private double basePointFinder(String elementName) throws IOException {
 
 
-        File f = new File("/Users/irmakbayir/Desktop/project_w1q0i/data/AllBaseValues.csv");
+        File f = new File("./data/AllBaseValues.csv");
         FileReader fr = new FileReader(f);
         BufferedReader br = new BufferedReader(fr);
 
