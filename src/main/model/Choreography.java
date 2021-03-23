@@ -4,8 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
+
+import static java.lang.Character.isDigit;
 
 // This class is about figure skating choreographies which consist of a list of elements and which have different
 //     features like deductions, falls, duration, type and skatingSkillsComponent.
@@ -207,6 +212,22 @@ public class Choreography implements Writable {
         }
     }
 
+    public String printOutEligibility(String type) {
+        if (this.isEligibleChoreography() && this.isEligibleDuration()) {
+             return "Your choreography matches the\nrules of ISU rule book's " + type
+                    + "\nprogram definition.";
+        } else if (!this.isEligibleChoreography() && this.isEligibleDuration()) {
+            return "Your choreography DOES NOT match\nthe rules of ISU rule book's " + type
+                    + "\nprogram definition due to incorrect\narrangement of elements.";
+        } else if (this.isEligibleChoreography() && !this.isEligibleDuration()) {
+            return "Your choreography DOES NOT match\nthe rules of ISU rule book's " + type
+                    + "\nprogram definition due to incorrect\nduration.";
+        } else {
+            return "Your choreography DOES NOT match\nthe rules of ISU rule book's " + type
+                    + "\nprogram definition due to incorrect\narrangement of elements\nand duration.";
+        }
+    }
+
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -229,5 +250,118 @@ public class Choreography implements Writable {
         }
 
         return jsonArray;
+    }
+
+    // MODIFIES: choreography
+    // EFFECTS: checks if the GOE is in the correct format: "+d.dd" or "-d.dd" where d is a digit.
+    public boolean checkIfProperGOE(String str) {
+
+        if (str.length() != 5) {
+            return false;
+        }
+
+        char firstChar = str.charAt(0);
+        char secondChar = str.charAt(1);
+        char thirdChar = str.charAt(2);
+        char fourthChar = str.charAt(3);
+        char fifthChar = str.charAt(4);
+
+        return (firstChar == 43 || firstChar == 45)
+                && Character.isDigit(secondChar) && thirdChar == 46
+                && Character.isDigit(fourthChar) && Character.isDigit(fifthChar);
+    }
+
+    // EFFECTS: reads the csv document containing base points and returns the base point of the given element,
+    //          throws an exception if the element is not found
+    // citations: https://www.javatpoint.com/how-to-read-csv-file-in-java and
+    //            https://stackabuse.com/reading-and-writing-csvs-in-java/
+    public double basePointFinder(String elementName) throws IOException {
+
+        File f = new File("./data/AllBaseValues.csv");
+        FileReader fr = new FileReader(f);
+        BufferedReader br = new BufferedReader(fr);
+
+        String row;
+
+        while ((row = br.readLine()) != null) {
+            String[] data = row.split(",");
+
+            String name = data[0];
+            String point = data[1];
+
+            if (elementName.equals(name)) {
+                return Double.parseDouble(point);
+            }
+        }
+
+        return 0.00;
+    }
+
+    // EFFECTS: determines the rotation or level depending on the type of element, returns the result (0 if Base level)
+    public String rotationOrLevelFinder(String name, String type) {
+
+        String firstChar = Character.toString(name.charAt(0));
+        String lastChar = Character.toString(name.charAt(name.length() - 1));
+        String secondLastChar = Character.toString(name.charAt(name.length() - 2));
+
+        if (type.equals("Jump")) {
+            return firstChar;
+        }
+
+        if (lastChar.equals("V")) {
+            if (secondLastChar.equals("B")) {
+                return "0";
+            }
+            return secondLastChar;
+        } else if (lastChar.equals("B")) {
+            return "0";
+        }
+        return lastChar;
+    }
+
+    // EFFECTS: finds the type of the element depending on its name and returns it
+    public String typeFinder(String s) {
+        char firstChar = s.charAt(0);
+
+        if (isDigit(firstChar)) {
+            return "Jump";
+        } else {
+            if (s.contains("StSq") || s.contains("ChSq")) {
+                return "Step";
+            } else if (s.contains("Sp")) {
+                return "Spin";
+            } else {
+                System.out.println("The element name is still not valid. Please use ISU abbreviations.");
+            }
+        }
+
+        return "The element name is still not valid. Please use ISU abbreviations.";
+    }
+
+    // EFFECTS: considers the total technical score, skating skills score, falls and prints the final result
+    public String calculate() {
+
+        List<Element> elements = this.getListOfElements();
+        this.determineSecondHalfElements();
+
+        double technicalPoints = 0;
+        for (Element e : elements) {
+            double basePoint = e.getBasePoint();
+            double goePoint = e.getGOE();
+            technicalPoints = technicalPoints + basePoint + goePoint;
+        }
+
+        double skatingPoints = this.getSkatingSkillsComponent();
+        this.setDeductions(this.deductionCounter(this.getFalls()));
+        double deductedPoints = this.getDeductions();
+        double finalPoint = technicalPoints + skatingPoints - deductedPoints;
+
+        String type = this.returnTypeAsString();
+        printOutEligibility(type);
+
+        return "\n\nThe points you will get from this\nchoreography is: " + String.format("%.2f", finalPoint) +  "."
+                + "\n\nYou have " + String.format("%.2f", deductedPoints)
+                + " deductions.\nYour technical score is " + String.format("%.2f", technicalPoints) + "."
+                + "\nYour skating skills component\nis " + String.format("%.2f", skatingPoints) + ".";
     }
 }

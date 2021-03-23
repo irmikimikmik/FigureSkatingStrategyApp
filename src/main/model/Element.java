@@ -64,4 +64,5 @@ public abstract class Element implements Writable {
     public abstract double getRotationOrLevel();
 
     public abstract JSONObject toJson();
+
 }

@@ -16,21 +16,23 @@ import static java.lang.Character.isDigit;
 public class StrategyApp extends JFrame {
 
     private static final String JSON_STORE = "./data/choreography.json";
-    private Choreography choreography;
-    private Scanner input;
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    protected Choreography choreography;
+    // code taken from TellerApp
+    private Scanner input = new Scanner(System.in);
+    private final JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
+    private final JsonReader jsonReader = new JsonReader(JSON_STORE);
+
 
     // EFFECTS: runs the Strategy Application
     public StrategyApp() {
-        this.choreography = new Choreography("My choreography", 0.0, 0, 0.0,
+        choreography = new Choreography("My choreography", 0.0, 0, 0.0,
                 true, 0.0, new ArrayList<>());
-        this.choreography.setChoreographyName("My choreography");
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
-        input = new Scanner(System.in); // code taken from TellerApp
+        choreography.setChoreographyName("My choreography");
+
         runStrategy();
     }
+
+    public Choreography getChoreography() { return this.choreography; }
 
     // EFFECTS: depending on the input from the user, proceeds to start to prediction or quits.
     private void runStrategy() {
@@ -103,8 +105,10 @@ public class StrategyApp extends JFrame {
             typeQuestion();
         } else if ("e".equals(command)) {
             if (choreography.getType()) {
+                elementMessage();
                 elementsQuestion(7);
             } else {
+                elementMessage();
                 elementsQuestion(12);
             }
         } else if ("f".equals(command)) {
@@ -232,8 +236,6 @@ public class StrategyApp extends JFrame {
     //          also handles the exception that comes from basePointFinder
     private void elementsQuestion(int i) {
 
-        elementMessage();
-
         for (int x = 0; x < i; x++) {
             System.out.println(ordinal(x + 1) + " element: ");
             String elementName = input.next();
@@ -278,7 +280,7 @@ public class StrategyApp extends JFrame {
         String stringGOE = input.next();
 
         while (!checkIfProperGOE(stringGOE)) {
-            System.out.println("Please enter a valid GOE in the form of -*.** or +*.** using digits as 'd's.");
+            System.out.println("Please enter a valid GOE in the form of -*.** or +*.** using digits as '*'s.");
             stringGOE = input.next();
         }
         return stringGOE;
@@ -314,8 +316,7 @@ public class StrategyApp extends JFrame {
     //          throws an exception if the element is not found
     // citations: https://www.javatpoint.com/how-to-read-csv-file-in-java and
     //            https://stackabuse.com/reading-and-writing-csvs-in-java/
-    private double basePointFinder(String elementName) throws IOException {
-
+    public static double basePointFinder(String elementName) throws IOException {
 
         File f = new File("./data/AllBaseValues.csv");
         FileReader fr = new FileReader(f);
@@ -351,7 +352,7 @@ public class StrategyApp extends JFrame {
     }
 
     // EFFECTS: determines the rotation or level depending on the type of element, returns the result (0 if Base level)
-    private String rotationOrLevelFinder(String name, String type) {
+    public static String rotationOrLevelFinder(String name, String type) {
 
         String firstChar = Character.toString(name.charAt(0));
         String lastChar = Character.toString(name.charAt(name.length() - 1));
@@ -373,7 +374,7 @@ public class StrategyApp extends JFrame {
     }
 
     // EFFECTS: finds the type of the element depending on its name and returns it
-    private String typeFinder(String s) {
+    public static String typeFinder(String s) {
         char firstChar = s.charAt(0);
 
         if (isDigit(firstChar)) {
@@ -393,7 +394,7 @@ public class StrategyApp extends JFrame {
 
     // MODIFIES: choreography
     // EFFECTS: checks if the GOE is in the correct format: "+d.dd" or "-d.dd" where d is a digit.
-    private boolean checkIfProperGOE(String str) {
+    public static boolean checkIfProperGOE(String str) {
 
         if (str.length() != 5) {
             return false;
@@ -413,7 +414,7 @@ public class StrategyApp extends JFrame {
     // EFFECTS: converts an integer from decimal the ordinal. For example: 1 to 1st.
     // citations:
     // https://stackoverflow.com/questions/6810336/is-there-a-way-in-java-to-convert-an-integer-to-its-ordinal-name
-    private static String ordinal(int i) {
+    public static String ordinal(int i) {
         String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
         switch (i % 100) {
             case 11:
@@ -468,5 +469,4 @@ public class StrategyApp extends JFrame {
                     + " program definition due to incorrect arrangement of elements and duration.");
         }
     }
-
 }
