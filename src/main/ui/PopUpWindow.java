@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class PopUpWindow extends JFrame implements ActionListener {
 
@@ -62,12 +61,11 @@ public class PopUpWindow extends JFrame implements ActionListener {
     JLabel sscIsSetLabel;
 
 
-    public PopUpWindow() {
+    public PopUpWindow(Choreography c) {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(null);
         frame.setVisible(false);
-        choreography = new Choreography("My choreography", 0.0, 0, 0.0,
-                true, 0.0, new ArrayList<>());
+        this.choreography = c;
     }
 
     public void giveInstructions(String s) {
@@ -324,15 +322,15 @@ public class PopUpWindow extends JFrame implements ActionListener {
 
         if ((this.choreography.getType() && (elementNumber - 1 == 7))
                 || (!this.choreography.getType() && (elementNumber - 1 == 12))) {
-                elementLabel12.setVisible(false);
-                goeLabel1.setVisible(false);
-                elementTextBox.setVisible(false);
-                goeTextBox.setVisible(false);
-                endOfElements = new JLabel("You have entered all the elements. Please click the exit "
-                        + "button on the top left corner.");
-                nextElementButton.setVisible(false);
-                endOfElements.setBounds(400, 220, 600, 15);;
-                frame.add(endOfElements);
+            elementLabel12.setVisible(false);
+            goeLabel1.setVisible(false);
+            elementTextBox.setVisible(false);
+            goeTextBox.setVisible(false);
+            endOfElements = new JLabel("You have entered all the elements. Please click the exit "
+                    + "button on the top left corner.");
+            nextElementButton.setVisible(false);
+            endOfElements.setBounds(400, 220, 600, 15);;
+            frame.add(endOfElements);
         }
     }
 

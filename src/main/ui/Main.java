@@ -1,11 +1,16 @@
 package ui;
 
 import model.Choreography;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main extends JFrame implements ActionListener {
 
@@ -23,9 +28,19 @@ public class Main extends JFrame implements ActionListener {
     private JButton calculateButton;
     JTextArea choreographyText;
     JTextArea resultText;
+    JLabel loadLabel;
+    JLabel saveLabel;
+
+    private Choreography choreography;
+
+    private static final String JSON_STORE = "./data/choreography.json";
+    private final JsonWriter jsonWriter = new JsonWriter(JSON_STORE);
+    private final JsonReader jsonReader = new JsonReader(JSON_STORE);
 
     public Main() {
         super("Strategy GUI");
+        this.choreography = new Choreography("My choreography", 0.0, 0, 0.0,
+                true, 0.0, new ArrayList<>());
         initializeGraphics();
     }
 
@@ -53,7 +68,7 @@ public class Main extends JFrame implements ActionListener {
 
     public void createTextBoxes() {
         // CHOREOGRAPHY BOX
-        choreographyText = new JTextArea("Choreography:\n\n");
+        choreographyText = new JTextArea("Your choreography will appear here if you click save or load.");
         choreographyText.setBounds(45, 60, 225, 390);
         choreographyText.setEditable(false);
         panel.add(choreographyText);
@@ -68,13 +83,13 @@ public class Main extends JFrame implements ActionListener {
     public void createButtons() {
         // LOAD BUTTON
         loadButton = new JButton("load");
-        loadButton.setBounds(45,480,100,60);
+        loadButton.setBounds(45,465,100,60);
         loadButton.addActionListener(this);
         panel.add(loadButton);
 
         // SAVE BUTTON
         saveButton = new JButton("save");
-        saveButton.setBounds(165,480,100,60);
+        saveButton.setBounds(165,465,100,60);
         saveButton.addActionListener(this);
         panel.add(saveButton);
 
@@ -125,36 +140,90 @@ public class Main extends JFrame implements ActionListener {
         JLabel resultLabel = new JLabel("Result:");
         resultLabel.setBounds(305, 310, 100, 15);
         panel.add(resultLabel);
+
+        // LOAD LABEL
+        loadLabel = new JLabel("loaded!");
+        loadLabel.setBounds(70, 535, 100, 15);
+        loadLabel.setVisible(false);
+        panel.add(loadLabel);
+
+        // SAVE LABEL
+        saveLabel = new JLabel("saved!");
+        saveLabel.setBounds(195, 535, 100, 15);
+        saveLabel.setVisible(false);
+        panel.add(saveLabel);
     }
 
-    @Override
     public void actionPerformed(ActionEvent e) {
-        PopUpWindow newWindow = new PopUpWindow();
+        PopUpWindow newWindow = new PopUpWindow(this.choreography);
         if (e.getSource() == typeButton) {
-             newWindow.giveInstructions("type");
+            loadLabel.setVisible(false);
+            saveLabel.setVisible(false);
+            newWindow.giveInstructions("type");
         } else if (e.getSource() == elementButton) {
+            loadLabel.setVisible(false);
+            saveLabel.setVisible(false);
             newWindow.giveInstructions("element");
         } else if (e.getSource() == fallButton) {
+            loadLabel.setVisible(false);
+            saveLabel.setVisible(false);
             newWindow.giveInstructions("fall");
         } else if (e.getSource() == durationButton) {
+            loadLabel.setVisible(false);
+            saveLabel.setVisible(false);
             newWindow.giveInstructions("duration");
         } else if (e.getSource() == sscButton) {
+            loadLabel.setVisible(false);
+            saveLabel.setVisible(false);
             newWindow.giveInstructions("ssc");
         } else if (e.getSource() == calculateButton) {
-            reportResults(newWindow);
+            reportResults();
+        } else if (e.getSource() == loadButton) {
+            loadChoreography();
+        } else if (e.getSource() == saveButton) {
+            saveChoreography();
         }
     }
 
-    private void reportResults(PopUpWindow p) {
-        Choreography choreography = p.getChoreography();
-        String choreographyType = choreography.returnTypeAsString();
+    // taken from JSONSerializationDemo: https://github.com/stleary/JSON-java.git
+    // MODIFIES: this
+    // EFFECTS: loads choreography from file
+    private void loadChoreography() {
+        try {
+            choreography = jsonReader.read();
+            choreographyText.setText(""); //!!!
+            loadLabel.setVisible(true);
+            saveLabel.setVisible(false);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
 
-        String eligibilityString = choreography.printOutEligibility(choreographyType);
-        String calculateString = choreography.calculate();
+    // taken from JSONSerializationDemo: https://github.com/stleary/JSON-java.git
+    // EFFECTS: saves the choreography to file
+    private void saveChoreography() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(choreography);
+            jsonWriter.close();
+            choreographyText.setText(""); //!!!
+            saveLabel.setVisible(true);
+            loadLabel.setVisible(false);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    private void reportResults() {
+
+        String choreographyType = this.choreography.returnTypeAsString();
+        String eligibilityString = this.choreography.printOutEligibility(choreographyType);
+        String calculateString = this.choreography.calculate();
 
         String entireText = eligibilityString + calculateString;
         resultText.setText(entireText);
     }
+
 
     public static void main(String[] args) {
         new Main();
