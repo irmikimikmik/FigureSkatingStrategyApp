@@ -1,9 +1,13 @@
 package ui;
 
 import model.Choreography;
+import model.Element;
 import persistence.JsonReader;
 import persistence.JsonWriter;
+import sound.AudioPlayer;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends JFrame implements ActionListener {
 
@@ -27,9 +32,14 @@ public class Main extends JFrame implements ActionListener {
     private JButton sscButton;
     private JButton calculateButton;
     JTextArea choreographyText;
+    JScrollPane choreographyScroll;
     JTextArea resultText;
     JLabel loadLabel;
     JLabel saveLabel;
+
+    // code taken from https://www.codejava.net/coding/java-audio-player-sample-application-in-swing
+    private AudioPlayer player = new AudioPlayer();
+    private String audioFilePath = "./data/resultsAreReady.wav";
 
     private Choreography choreography;
 
@@ -42,6 +52,16 @@ public class Main extends JFrame implements ActionListener {
         this.choreography = new Choreography("My choreography", 0.0, 0, 0.0,
                 true, 0.0, new ArrayList<>());
         initializeGraphics();
+
+        try {
+            player.load(audioFilePath);
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initializeGraphics() {
@@ -68,13 +88,14 @@ public class Main extends JFrame implements ActionListener {
 
     public void createTextBoxes() {
         // CHOREOGRAPHY BOX
-        choreographyText = new JTextArea("Your choreography will appear here if you click save or load.");
-        choreographyText.setBounds(45, 60, 225, 390);
+        choreographyText = new JTextArea("Your choreography will appear\nhere when you click save or load.");
         choreographyText.setEditable(false);
-        panel.add(choreographyText);
+        choreographyScroll = new JScrollPane(choreographyText);
+        choreographyScroll.setBounds(45, 60, 225, 390);
+        panel.add(choreographyScroll);
 
         // RESULT BOX
-        resultText = new JTextArea("Results will be shown here...\n\n");
+        resultText = new JTextArea("Results will be shown here when\nyou click calculate.\n\n");
         resultText.setBounds(300, 330, 240, 210);
         resultText.setEditable(false);
         panel.add(resultText);
@@ -177,7 +198,14 @@ public class Main extends JFrame implements ActionListener {
             saveLabel.setVisible(false);
             newWindow.giveInstructions("ssc");
         } else if (e.getSource() == calculateButton) {
+            // code taken from https://www.codejava.net/coding/java-audio-player-sample-application-in-swing
+            try {
+                player.play();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
             reportResults();
+            player.stop();
         } else if (e.getSource() == loadButton) {
             loadChoreography();
         } else if (e.getSource() == saveButton) {
@@ -185,19 +213,21 @@ public class Main extends JFrame implements ActionListener {
         }
     }
 
+
     // taken from JSONSerializationDemo: https://github.com/stleary/JSON-java.git
     // MODIFIES: this
     // EFFECTS: loads choreography from file
     private void loadChoreography() {
         try {
             choreography = jsonReader.read();
-            choreographyText.setText(""); //!!!
+            choreographyText.setText(returnChoreographyAsString());
             loadLabel.setVisible(true);
             saveLabel.setVisible(false);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
+
 
     // taken from JSONSerializationDemo: https://github.com/stleary/JSON-java.git
     // EFFECTS: saves the choreography to file
@@ -206,12 +236,50 @@ public class Main extends JFrame implements ActionListener {
             jsonWriter.open();
             jsonWriter.write(choreography);
             jsonWriter.close();
-            choreographyText.setText(""); //!!!
+            choreographyText.setText(returnChoreographyAsString());
             saveLabel.setVisible(true);
             loadLabel.setVisible(false);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
         }
+    }
+
+    private String returnChoreographyAsString() {
+        double deductions = choreography.getDeductions();
+        String typeString = choreography.returnTypeAsString();
+        double skatingSkillsComponent = choreography.getSkatingSkillsComponent();
+        double duration = choreography.getDuration();
+        int falls = choreography.getFalls();
+        List<Element> elements = choreography.getListOfElements();
+
+        String everythingExceptForElements = "\n  type: " + typeString + "\n  duration: " + duration
+                + "\n  deductions: " + deductions + "\n   falls: " + falls + "\n  skating component: "
+                + skatingSkillsComponent;
+
+        String elementsString = allFeaturesOfAllElementsAsString(elements);
+
+        return everythingExceptForElements + "\n\n" + elementsString;
+    }
+
+    private String allFeaturesOfAllElementsAsString(List<Element> elements) {
+        StringBuilder result = new StringBuilder();
+        int counter = 0;
+
+        for (Element e : elements) {
+            double basePoint = e.getBasePoint();
+            String name = e.getElementName();
+            String type = e.getElementType();
+            double goe = e.getGOE();
+            counter ++;
+
+            result.append("  ").append(ordinal(counter)).append(" element:")
+                    .append("\n     name: ").append(name).append("\n     type: ")
+                    .append(type).append("\n     base point: ")
+                    .append(String.format("%.2f", basePoint))
+                    .append("\n     goe: ").append(String.format("%.2f", goe)).append("\n");
+        }
+
+        return result.toString();
     }
 
     private void reportResults() {
@@ -224,6 +292,17 @@ public class Main extends JFrame implements ActionListener {
         resultText.setText(entireText);
     }
 
+    private static String ordinal(int i) {
+        String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+        switch (i % 100) {
+            case 11:
+            case 12:
+            case 13:
+                return i + "th";
+            default:
+                return i + suffixes[i % 10];
+        }
+    }
 
     public static void main(String[] args) {
         new Main();
