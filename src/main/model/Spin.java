@@ -8,6 +8,7 @@ public class Spin extends Element {
 
     private double level;
 
+    // creates a Spin object
     public Spin(String name, double basePoint, double goe, String type, double level) {
         super(name, basePoint, goe, type);
         this.level = level;

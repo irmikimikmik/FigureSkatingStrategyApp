@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// This class is about the Graphical User Interface where the user can interact with a panel and enter the contents of
+//     the choreography as well as see the results of the choreography on the interface.
 public class Main extends JFrame implements ActionListener {
 
     public static final int WIDTH = 600;
@@ -64,6 +66,7 @@ public class Main extends JFrame implements ActionListener {
         }
     }
 
+    // EFFECTS: creates a new panel and a frame object and sets their dimensions, labels, text boxes and buttons.
     public void initializeGraphics() {
         // the code after this in the constructor draws the JFrame window where this StrategyApp will operate
         // code taken from SimpleDrawingPlayer, https://www.youtube.com/watch?v=iE8tZ0hn2Ws and
@@ -86,6 +89,7 @@ public class Main extends JFrame implements ActionListener {
     }
 
 
+    // EFFECTS: creates text boxes to display choreography's contents and results
     public void createTextBoxes() {
         // CHOREOGRAPHY BOX
         choreographyText = new JTextArea("Your choreography will appear\nhere when you click save or load.");
@@ -101,6 +105,7 @@ public class Main extends JFrame implements ActionListener {
         panel.add(resultText);
     }
 
+    // EFFECTS: creates buttons to set the contents of the choreography
     public void createButtons() {
         // LOAD BUTTON
         loadButton = new JButton("load");
@@ -151,6 +156,7 @@ public class Main extends JFrame implements ActionListener {
         panel.add(calculateButton);
     }
 
+    // EFFECTS: creates labels for choreography text box, result text box, label button and save button.
     public void createLabels() {
         // CHOREOGRAPHY LABEL
         JLabel choreographyLabel = new JLabel("Your choreography so far:");
@@ -175,6 +181,7 @@ public class Main extends JFrame implements ActionListener {
         panel.add(saveLabel);
     }
 
+    // EFFECTS: performs an action based on the button clicked
     public void actionPerformed(ActionEvent e) {
         PopUpWindow newWindow = new PopUpWindow(this.choreography);
         if (e.getSource() == typeButton) {
@@ -213,7 +220,6 @@ public class Main extends JFrame implements ActionListener {
         }
     }
 
-
     // taken from JSONSerializationDemo: https://github.com/stleary/JSON-java.git
     // MODIFIES: this
     // EFFECTS: loads choreography from file
@@ -244,6 +250,7 @@ public class Main extends JFrame implements ActionListener {
         }
     }
 
+    // EFFECTS: returns the contents of the choreography as a string for the result text box.
     private String returnChoreographyAsString() {
         double deductions = choreography.getDeductions();
         String typeString = choreography.returnTypeAsString();
@@ -261,6 +268,7 @@ public class Main extends JFrame implements ActionListener {
         return everythingExceptForElements + "\n\n" + elementsString;
     }
 
+    // EFFECTS: returns the contents of all the elements as a string for the result text box.
     private String allFeaturesOfAllElementsAsString(List<Element> elements) {
         StringBuilder result = new StringBuilder();
         int counter = 0;
@@ -282,6 +290,7 @@ public class Main extends JFrame implements ActionListener {
         return result.toString();
     }
 
+    // EFFECTS: reports the results to the result text box
     private void reportResults() {
 
         String choreographyType = this.choreography.returnTypeAsString();
@@ -292,6 +301,9 @@ public class Main extends JFrame implements ActionListener {
         resultText.setText(entireText);
     }
 
+    // EFFECTS: converts an integer from decimal the ordinal. For example: 1 to 1st.
+    // citations:
+    // https://stackoverflow.com/questions/6810336/is-there-a-way-in-java-to-convert-an-integer-to-its-ordinal-name
     private static String ordinal(int i) {
         String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
         switch (i % 100) {

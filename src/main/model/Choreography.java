@@ -24,6 +24,7 @@ public class Choreography implements Writable {
     private double skatingSkillsComponent;
     private List<Element> listOfElements;
 
+    // constructs a choreography object
     public Choreography(String choreographyName, double deductions, int falls,
                         double duration, boolean type, double component, List<Element> elementsList) {
         this.choreographyName = choreographyName;
@@ -69,7 +70,6 @@ public class Choreography implements Writable {
     public int getFalls() {
         return this.falls;
     }
-
 
     // REQUIRES: a positive decimal with one digit before and two digits after the decimal point
     // MODIFIES: this
@@ -212,6 +212,8 @@ public class Choreography implements Writable {
         }
     }
 
+    // EFFECTS: prints out whether the choreography is eligible in terms of duration or arrangement of elements
+    //          according to the ISU rule book
     public String printOutEligibility(String type) {
         if (this.isEligibleChoreography() && this.isEligibleDuration()) {
              return "Your choreography matches the\nrules of ISU rule book's " + type
@@ -228,6 +230,7 @@ public class Choreography implements Writable {
         }
     }
 
+    // EFFECTS: creates a new Json object with the choreography's fields
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -294,7 +297,7 @@ public class Choreography implements Writable {
             }
         }
 
-        return 0.00;
+        throw new IOException();
     }
 
     // EFFECTS: determines the rotation or level depending on the type of element, returns the result (0 if Base level)

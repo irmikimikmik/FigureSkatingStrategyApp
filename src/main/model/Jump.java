@@ -8,6 +8,7 @@ public class Jump extends Element {
 
     private double rotations;
 
+    // creates a Jump object
     public Jump(String name, double basePoint, double goe, String type, double rotations) {
         super(name, basePoint, goe, type);
         this.rotations = rotations;

@@ -12,6 +12,7 @@ public abstract class Element implements Writable {
     protected double goe;
     protected String type;
 
+    // constructs an Element object
     public Element(String name, double basePoint, double goe, String type) {
         this.name = name;
         this.basePoint = basePoint;

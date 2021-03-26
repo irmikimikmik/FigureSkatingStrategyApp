@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -455,5 +456,52 @@ public class ChoreographyTest {
         assertEquals(elements.get(0), element1);
         assertEquals(elements.get(3), element4);
         assertEquals(elements.get(5), element6);
+    }
+
+    @Test
+    void testTypeFinder() {
+
+        assertEquals("Step", choreography.typeFinder("StSq4"));
+        assertEquals("Step", choreography.typeFinder("ChSq1"));
+        assertEquals("Jump", choreography.typeFinder("2A"));
+        assertEquals("Jump", choreography.typeFinder("3T"));
+        assertEquals("Spin", choreography.typeFinder("FCCoSp4V"));
+        assertEquals("Spin", choreography.typeFinder("CoSpB"));
+
+    }
+
+    @Test
+    void testBasePointFinder() {
+
+        try {
+            assertEquals(3.90, choreography.basePointFinder("StSq4"));
+            assertEquals(3.00, choreography.basePointFinder("ChSq1"));
+            assertEquals(3.30, choreography.basePointFinder("2A"));
+            assertEquals(4.20, choreography.basePointFinder("3T"));
+            assertEquals(2.63, choreography.basePointFinder("FCCoSp4V"));
+            assertEquals(1.50, choreography.basePointFinder("CoSpB"));
+        } catch (IOException e) {
+            fail("We shouldn't have gotten here.");
+        }
+
+        try {
+            assertEquals(0.0, choreography.basePointFinder("abc"));
+            fail("This was an invalid element. There sohuld've been an exception.");
+        } catch (IOException e) {
+            // do nothing
+        }
+
+    }
+
+    @Test
+    void testRotationOrLevelFinder() {
+
+        assertEquals("4", choreography.rotationOrLevelFinder("StSq4", "Step"));
+        assertEquals("1", choreography.rotationOrLevelFinder("ChSq1", "Step"));
+        assertEquals("2", choreography.rotationOrLevelFinder("2A", "Jump"));
+        assertEquals("3", choreography.rotationOrLevelFinder("3T", "Jump"));
+        assertEquals("4", choreography.rotationOrLevelFinder("FCCoSp4V", "Spin"));
+        assertEquals("0", choreography.rotationOrLevelFinder("CoSpB", "Spin"));
+
     }
 }

@@ -8,6 +8,7 @@ public class Step extends Element {
 
     private double level;
 
+    // creates a Step object
     public Step(String name, double basePoint, double goe, String type, double level) {
         super(name, basePoint, goe, type);
         this.level = level;
