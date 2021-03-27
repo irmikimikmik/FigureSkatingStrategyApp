@@ -193,12 +193,12 @@ public class Choreography implements Writable {
         if (type) {
             for (int i = 4; i <= 6; i++) {
                 Element e = listOfElements.get(i);
-                e.addGOE(e.getBasePoint() * 1.1);
+                e.addGOE(e.getBasePoint() * 0.1);
             }
         } else {
             for (int i = 6; i <= 11; i++) {
                 Element e = listOfElements.get(i);
-                e.addGOE(e.getBasePoint() * 1.1);
+                e.addGOE(e.getBasePoint() * 0.1);
             }
         }
     }

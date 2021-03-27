@@ -286,9 +286,9 @@ public class ChoreographyTest {
         assertEquals(element2.getGOE(), 0.00);
         assertEquals(element3.getGOE(), 0.00);
         assertEquals(element4.getGOE(), 0.00);
-        assertEquals(element5.getGOE(), element5.getBasePoint()*1.1);
-        assertEquals(element6.getGOE(), element6.getBasePoint()*1.1);
-        assertEquals(element7.getGOE(), element7.getBasePoint()*1.1);
+        assertEquals(element5.getGOE(), element5.getBasePoint()*0.1);
+        assertEquals(element6.getGOE(), element6.getBasePoint()*0.1);
+        assertEquals(element7.getGOE(), element7.getBasePoint()*0.1);
     }
 
     @Test
@@ -296,26 +296,26 @@ public class ChoreographyTest {
         Element element1 = new Jump("3F", 5.20, 0.00, "Jump", 3);
         Element element2 = new Jump("3F", 5.20, 0.00, "Jump", 3);
 
-        Element element4 = new Step("StSq1", 1.80, 0.00, "Step", 1);
+        Element element3 = new Step("StSq1", 1.80, 0.00, "Step", 1);
 
-        Element element6 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
-        Element element7 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element4 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
+        Element element5 = new Spin("FCCoSp4", 3.50, 0.00, "Spin", 4);
 
         choreography.setType(true);
         choreography.addElement(element1);
         choreography.addElement(element2);
+        choreography.addElement(element3);
         choreography.addElement(element4);
-        choreography.addElement(element6);
-        choreography.addElement(element7);
+        choreography.addElement(element5);
 
         assertTrue(choreography.getType());
         choreography.determineSecondHalfElements();
 
         assertEquals(element1.getGOE(), 0.00);
         assertEquals(element2.getGOE(), 0.00);
+        assertEquals(element3.getGOE(), 0.00);
         assertEquals(element4.getGOE(), 0.00);
-        assertEquals(element6.getGOE(), 0.00);
-        assertEquals(element7.getGOE(), 0.00);
+        assertEquals(element5.getGOE(), 0.00);
     }
 
 
@@ -358,12 +358,12 @@ public class ChoreographyTest {
         assertEquals(element4.getGOE(), 0.00);
         assertEquals(element5.getGOE(), 0.00);
         assertEquals(element6.getGOE(), 0.00);
-        assertEquals(element7.getGOE(), element7.getBasePoint()*1.1);
-        assertEquals(element8.getGOE(), element8.getBasePoint()*1.1);
-        assertEquals(element9.getGOE(), element9.getBasePoint()*1.1);
-        assertEquals(element10.getGOE(), element10.getBasePoint()*1.1);
-        assertEquals(element11.getGOE(), element11.getBasePoint()*1.1);
-        assertEquals(element12.getGOE(), element12.getBasePoint()*1.1);
+        assertEquals(element7.getGOE(), element7.getBasePoint()*0.1);
+        assertEquals(element8.getGOE(), element8.getBasePoint()*0.1);
+        assertEquals(element9.getGOE(), element9.getBasePoint()*0.1);
+        assertEquals(element10.getGOE(), element10.getBasePoint()*0.1);
+        assertEquals(element11.getGOE(), element11.getBasePoint()*0.1);
+        assertEquals(element12.getGOE(), element12.getBasePoint()*0.1);
 
     }
 

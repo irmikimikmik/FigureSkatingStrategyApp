@@ -40,8 +40,8 @@ public class Main extends JFrame implements ActionListener {
     JLabel saveLabel;
 
     // code taken from https://www.codejava.net/coding/java-audio-player-sample-application-in-swing
-    private AudioPlayer player = new AudioPlayer();
-    private String audioFilePath = "./data/resultsAreReady.wav";
+    private final AudioPlayer player = new AudioPlayer();
+    private final String audioFilePath = "./data/resultsAreReady.wav";
 
     private Choreography choreography;
 
@@ -57,11 +57,7 @@ public class Main extends JFrame implements ActionListener {
 
         try {
             player.load(audioFilePath);
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
     }
@@ -99,7 +95,9 @@ public class Main extends JFrame implements ActionListener {
         panel.add(choreographyScroll);
 
         // RESULT BOX
-        resultText = new JTextArea("Results will be shown here when\nyou click calculate.\n\n");
+        resultText = new JTextArea("WARNING: Please only make a\nsingle calculation for a single\nchoreography."
+        + " Due to the floating-\npoint error, continuously clicking\ncalculate will distort the results."
+                + "\nYour results will appear here\nafter you finish entering all the\ncontents of the choreography.");
         resultText.setBounds(300, 330, 240, 210);
         resultText.setEditable(false);
         panel.add(resultText);
@@ -213,6 +211,12 @@ public class Main extends JFrame implements ActionListener {
             }
             reportResults();
             player.stop();
+            try {
+                player.load(audioFilePath);
+            } catch (UnsupportedAudioFileException | IOException |
+                    LineUnavailableException unsupportedAudioFileException) {
+                unsupportedAudioFileException.printStackTrace();
+            }
         } else if (e.getSource() == loadButton) {
             loadChoreography();
         } else if (e.getSource() == saveButton) {
@@ -260,7 +264,7 @@ public class Main extends JFrame implements ActionListener {
         List<Element> elements = choreography.getListOfElements();
 
         String everythingExceptForElements = "\n  type: " + typeString + "\n  duration: " + duration
-                + "\n  deductions: " + deductions + "\n   falls: " + falls + "\n  skating component: "
+                + "\n  deductions: " + deductions + "\n  falls: " + falls + "\n  skating component: "
                 + skatingSkillsComponent;
 
         String elementsString = allFeaturesOfAllElementsAsString(elements);
