@@ -12,7 +12,7 @@ import java.util.List;
 
 import static java.lang.Character.isDigit;
 
-// This class is about figure skating choreographies which consist of a list of elements and which have different
+// This class is about figure skating choreography which consist of a list of elements and which have different
 //     features like deductions, falls, duration, type and skatingSkillsComponent.
 public class Choreography implements Writable {
 
@@ -253,25 +253,6 @@ public class Choreography implements Writable {
         }
 
         return jsonArray;
-    }
-
-    // MODIFIES: choreography
-    // EFFECTS: checks if the GOE is in the correct format: "+d.dd" or "-d.dd" where d is a digit.
-    public boolean checkIfProperGOE(String str) {
-
-        if (str.length() != 5) {
-            return false;
-        }
-
-        char firstChar = str.charAt(0);
-        char secondChar = str.charAt(1);
-        char thirdChar = str.charAt(2);
-        char fourthChar = str.charAt(3);
-        char fifthChar = str.charAt(4);
-
-        return (firstChar == 43 || firstChar == 45)
-                && Character.isDigit(secondChar) && thirdChar == 46
-                && Character.isDigit(fourthChar) && Character.isDigit(fifthChar);
     }
 
     // EFFECTS: reads the csv document containing base points and returns the base point of the given element,

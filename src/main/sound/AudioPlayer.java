@@ -4,38 +4,18 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * An utility class for playing back audio files using Java Sound API.
- * @author www.codejava.net
- *
- */
+// An utility class for playing back audio files using Java Sound API.
+// @author www.codejava.net
 public class AudioPlayer implements LineListener {
-    private static final int SECONDS_IN_HOUR = 60 * 60;
-    private static final int SECONDS_IN_MINUTE = 60;
 
-    /**
-     * this flag indicates whether the playback completes or not.
-     */
     private boolean playCompleted;
-
-    /**
-     * this flag indicates whether the playback is stopped or not.
-     */
     private boolean isStopped;
-
     private boolean isPaused;
-
     private Clip audioClip;
 
-    /**
-     * Load audio file before playing back
-     *
-     * @param audioFilePath
-     *            Path of the audio file.
-     * @throws IOException
-     * @throws UnsupportedAudioFileException
-     * @throws LineUnavailableException
-     */
+    // EFFECTS: loads the audioFile by following the file path, throws UnsupportedAudioFileException if the type of the
+    //          audio file is not .wav, IOException if file can't be found and LineUnavailableException if line from
+    //          the audio file cannot be found.
     public void load(String audioFilePath)
             throws UnsupportedAudioFileException, IOException,
             LineUnavailableException {
@@ -55,60 +35,19 @@ public class AudioPlayer implements LineListener {
         audioClip.open(audioStream);
     }
 
-    public long getClipSecondLength() {
-        return audioClip.getMicrosecondLength() / 1_000_000;
-    }
-
-    public String getClipLengthString() {
-        String length = "";
-        long hour = 0;
-        long minute = 0;
-        long seconds = audioClip.getMicrosecondLength() / 1_000_000;
-
-        System.out.println(seconds);
-
-        if (seconds >= SECONDS_IN_HOUR) {
-            hour = seconds / SECONDS_IN_HOUR;
-            length = String.format("%02d:", hour);
-        } else {
-            length += "00:";
-        }
-
-        minute = seconds - hour * SECONDS_IN_HOUR;
-        if (minute >= SECONDS_IN_MINUTE) {
-            minute = minute / SECONDS_IN_MINUTE;
-            length += String.format("%02d:", minute);
-
-        } else {
-            minute = 0;
-            length += "00:";
-        }
-
-        long second = seconds - hour * SECONDS_IN_HOUR - minute * SECONDS_IN_MINUTE;
-
-        length += String.format("%02d", second);
-
-        return length;
-    }
-
-    /**
-     * Play a given audio file.
-     *
-     * @throws IOException
-     * @throws UnsupportedAudioFileException
-     * @throws LineUnavailableException
-     */
-    public void play() throws IOException {
+    // EFFECTS: plays the loaded audio
+    public void play() {
 
         audioClip.start();
 
         playCompleted = false;
         isStopped = false;
+        isPaused = false;
 
         while (!playCompleted) {
             // wait for the playback completes
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
                 if (isStopped) {
@@ -128,24 +67,11 @@ public class AudioPlayer implements LineListener {
 
     }
 
-    /**
-     * Stop playing back.
-     */
+    // EFFECTS: stops the audio
     public void stop() {
         isStopped = true;
     }
 
-    public void pause() {
-        isPaused = true;
-    }
-
-    public void resume() {
-        isPaused = false;
-    }
-
-    /**
-     * Listens to the audio line events to know when the playback completes.
-     */
     @Override
     public void update(LineEvent event) {
         LineEvent.Type type = event.getType();
@@ -154,9 +80,5 @@ public class AudioPlayer implements LineListener {
                 playCompleted = true;
             }
         }
-    }
-
-    public Clip getAudioClip() {
-        return audioClip;
     }
 }

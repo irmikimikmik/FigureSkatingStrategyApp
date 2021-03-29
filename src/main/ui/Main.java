@@ -204,11 +204,7 @@ public class Main extends JFrame implements ActionListener {
             newWindow.giveInstructions("ssc");
         } else if (e.getSource() == calculateButton) {
             // code taken from https://www.codejava.net/coding/java-audio-player-sample-application-in-swing
-            try {
-                player.play();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            player.play();
             reportResults();
             player.stop();
             try {

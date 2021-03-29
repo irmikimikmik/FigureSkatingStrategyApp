@@ -3,7 +3,7 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
-// This abtract class is about figure skating elements which are included in skaters' choreographies and which have
+// This abstract class is about figure skating elements which are included in skaters' choreography and which have
 //     different features like name, base point, GOE and type.
 public abstract class Element implements Writable {
 

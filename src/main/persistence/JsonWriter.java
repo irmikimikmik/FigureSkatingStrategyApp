@@ -10,7 +10,7 @@ import java.io.*;
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
-    private String destination;
+    private final String destination;
 
     // taken from JSONSerializationDemo: https://github.com/stleary/JSON-java.git
     // EFFECTS: constructs writer to write to destination file

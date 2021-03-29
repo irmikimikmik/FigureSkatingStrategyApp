@@ -486,7 +486,7 @@ public class ChoreographyTest {
 
         try {
             assertEquals(0.0, choreography.basePointFinder("abc"));
-            fail("This was an invalid element. There sohuld've been an exception.");
+            fail("This was an invalid element. There should've been an exception.");
         } catch (IOException e) {
             // do nothing
         }

@@ -70,16 +70,22 @@ public class PopUpWindow extends JFrame implements ActionListener {
 
     public void giveInstructions(String s) {
 
-        if (s.equals("type")) {
-            typePopUp();
-        } else if (s.equals("element")) {
-            elementPopUp();
-        } else if (s.equals("fall")) {
-            fallPopUp();
-        } else if (s.equals("duration")) {
-            durationPopUp();
-        } else if (s.equals("ssc")) {
-            sscPopUp();
+        switch (s) {
+            case "type":
+                typePopUp();
+                break;
+            case "element":
+                elementPopUp();
+                break;
+            case "fall":
+                fallPopUp();
+                break;
+            case "duration":
+                durationPopUp();
+                break;
+            case "ssc":
+                sscPopUp();
+                break;
         }
 
         frame.setVisible(true);
@@ -298,20 +304,24 @@ public class PopUpWindow extends JFrame implements ActionListener {
     private void goToNextElementQuestion() throws IOException {
 
         String elementName = elementTextBox.getText();
-        Double elementBasePoint = this.choreography.basePointFinder(elementName);
-        Double elementGOE = Double.parseDouble(goeTextBox.getText());
+        double elementBasePoint = this.choreography.basePointFinder(elementName);
+        double elementGOE = Double.parseDouble(goeTextBox.getText());
         String elementType = this.choreography.typeFinder(elementName);
-        Integer rotationOrLevel = Integer.parseInt(this.choreography.rotationOrLevelFinder(elementName, elementType));
+        int rotationOrLevel = Integer.parseInt(this.choreography.rotationOrLevelFinder(elementName, elementType));
 
-        if (elementType.equals("Jump")) {
-            Element newJump = new Jump(elementName, elementBasePoint, elementGOE, elementType, rotationOrLevel);
-            this.choreography.addElement(newJump);
-        } else if (elementType.equals("Spin")) {
-            Element newSpin = new Spin(elementName, elementBasePoint, elementGOE, elementType, rotationOrLevel);
-            this.choreography.addElement(newSpin);
-        } else if (elementType.equals("Step")) {
-            Element newStep = new Step(elementName, elementBasePoint, elementGOE, elementType, rotationOrLevel);
-            this.choreography.addElement(newStep);
+        switch (elementType) {
+            case "Jump":
+                Element newJump = new Jump(elementName, elementBasePoint, elementGOE, elementType, rotationOrLevel);
+                this.choreography.addElement(newJump);
+                break;
+            case "Spin":
+                Element newSpin = new Spin(elementName, elementBasePoint, elementGOE, elementType, rotationOrLevel);
+                this.choreography.addElement(newSpin);
+                break;
+            case "Step":
+                Element newStep = new Step(elementName, elementBasePoint, elementGOE, elementType, rotationOrLevel);
+                this.choreography.addElement(newStep);
+                break;
         }
 
         elementTextBox.setText("");
@@ -329,7 +339,7 @@ public class PopUpWindow extends JFrame implements ActionListener {
             endOfElements = new JLabel("You have entered all the elements. Please click the exit "
                     + "button on the top left corner.");
             nextElementButton.setVisible(false);
-            endOfElements.setBounds(400, 220, 600, 15);;
+            endOfElements.setBounds(400, 220, 600, 15);
             frame.add(endOfElements);
         }
     }
