@@ -70,3 +70,16 @@ book.
 - As a user, I want to be able to save my choreography to file.
 - As a user, I want to be able to be able to load my choreography from file.
 - As a user, when I start the application, I want to be given the option to load my choreography from file.
+
+#### Phase 4: Task 2
+"Test and design a class in your model package that is robust.  You must have at least one method that throws a checked 
+exception.  You must have one test for the case where the exception is expected and another where the exception is not 
+expected."
+
+    Class with robust design: model.Choreography
+    Method with robust design: basePointFinder(String elementName)
+    How is it robust: basePointFinder considers the scenario of the user not entering a valid element in the field and
+    thus, throws and exception if it cannot find the element that was written by the user in the CSV file that contains
+    all the base points of every single element in figure skating
+    When is the exception caught: actionPerformed(ActionEvent e) in ui.PopUpWindow catches IOException that was thrown
+    when the input of the user can't be found by the CSV file reader in any lines of the file
