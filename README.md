@@ -83,3 +83,6 @@ expected."
     all the base points of every single element in figure skating
     When is the exception caught: actionPerformed(ActionEvent e) in ui.PopUpWindow catches IOException that was thrown
     when the input of the user can't be found by the CSV file reader in any lines of the file
+    !!! basePointFinder method has its 2 tests in the ChoreographyTest class where the first test written for it expects
+    the exception and fails if it is not caught and the second one doesn't expect and exception and fails when an
+    exception is caught.

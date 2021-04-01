@@ -471,7 +471,17 @@ public class ChoreographyTest {
     }
 
     @Test
-    void testBasePointFinder() {
+    void testBasePointFinderWithInvalidInput() {
+        try {
+            assertEquals(0.0, choreography.basePointFinder("abc"));
+            fail("This was an invalid element. There should've been an exception.");
+        } catch (IOException e) {
+            // do nothing
+        }
+    }
+
+    @Test
+    void testBasePointFinderWithValidInput() {
 
         try {
             assertEquals(3.90, choreography.basePointFinder("StSq4"));
@@ -483,14 +493,6 @@ public class ChoreographyTest {
         } catch (IOException e) {
             fail("We shouldn't have gotten here.");
         }
-
-        try {
-            assertEquals(0.0, choreography.basePointFinder("abc"));
-            fail("This was an invalid element. There should've been an exception.");
-        } catch (IOException e) {
-            // do nothing
-        }
-
     }
 
     @Test
