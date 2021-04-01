@@ -215,8 +215,9 @@ public class Choreography implements Writable {
     // EFFECTS: prints out whether the choreography is eligible in terms of duration or arrangement of elements
     //          according to the ISU rule book
     public String printOutEligibility(String type) {
+
         if (this.isEligibleChoreography() && this.isEligibleDuration()) {
-             return "Your choreography matches the\nrules of ISU rule book's " + type
+            return "Your choreography matches the\nrules of ISU rule book's " + type
                     + "\nprogram definition.";
         } else if (!this.isEligibleChoreography() && this.isEligibleDuration()) {
             return "Your choreography DOES NOT match\nthe rules of ISU rule book's " + type

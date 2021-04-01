@@ -105,48 +105,18 @@ public class Main extends JFrame implements ActionListener {
 
     // EFFECTS: creates buttons to set the contents of the choreography
     public void createButtons() {
-        // LOAD BUTTON
-        loadButton = new JButton("load");
-        loadButton.setBounds(45,465,100,60);
-        loadButton.addActionListener(this);
-        panel.add(loadButton);
 
-        // SAVE BUTTON
-        saveButton = new JButton("save");
-        saveButton.setBounds(165,465,100,60);
-        saveButton.addActionListener(this);
-        panel.add(saveButton);
+        createLoadButton();
+        createSaveButton();
+        createTypeButton();
+        createElementButton();
+        createFallButton();
+        createDurationButton();
+        createSkatingSkillsButton();
+        createCalculateButton();
+    }
 
-        // TYPE BUTTON
-        typeButton = new JButton("set type");
-        typeButton.setBounds(300,30,240,40);
-        typeButton.addActionListener(this);
-        panel.add(typeButton);
-
-        // ELEMENT BUTTON
-        elementButton = new JButton("add elements");
-        elementButton.setBounds(300,75,240,40);
-        elementButton.addActionListener(this);
-        panel.add(elementButton);
-
-        // FALL BUTTON
-        fallButton = new JButton("add falls");
-        fallButton.setBounds(300,120,240,40);
-        fallButton.addActionListener(this);
-        panel.add(fallButton);
-
-        // DURATION BUTTON
-        durationButton = new JButton("enter duration");
-        durationButton.setBounds(300,165,240,40);
-        durationButton.addActionListener(this);
-        panel.add(durationButton);
-
-        // SKATING SKILLS COMPONENT BUTTON
-        sscButton = new JButton("enter skating skills component");
-        sscButton.setBounds(300,210,240,40);
-        sscButton.addActionListener(this);
-        panel.add(sscButton);
-
+    private void createCalculateButton() {
         // CALCULATE BUTTON
         calculateButton = new JButton("CALCULATE!!");
         calculateButton.setBounds(300,255,240,40);
@@ -154,8 +124,65 @@ public class Main extends JFrame implements ActionListener {
         panel.add(calculateButton);
     }
 
+    private void createSkatingSkillsButton() {
+        // SKATING SKILLS COMPONENT BUTTON
+        sscButton = new JButton("enter skating skills component");
+        sscButton.setBounds(300,210,240,40);
+        sscButton.addActionListener(this);
+        panel.add(sscButton);
+    }
+
+    private void createDurationButton() {
+        // DURATION BUTTON
+        durationButton = new JButton("enter duration");
+        durationButton.setBounds(300,165,240,40);
+        durationButton.addActionListener(this);
+        panel.add(durationButton);
+    }
+
+    private void createFallButton() {
+        // FALL BUTTON
+        fallButton = new JButton("add falls");
+        fallButton.setBounds(300,120,240,40);
+        fallButton.addActionListener(this);
+        panel.add(fallButton);
+    }
+
+    private void createElementButton() {
+        // ELEMENT BUTTON
+        elementButton = new JButton("add elements");
+        elementButton.setBounds(300,75,240,40);
+        elementButton.addActionListener(this);
+        panel.add(elementButton);
+    }
+
+    private void createTypeButton() {
+        // TYPE BUTTON
+        typeButton = new JButton("set type");
+        typeButton.setBounds(300,30,240,40);
+        typeButton.addActionListener(this);
+        panel.add(typeButton);
+    }
+
+    private void createSaveButton() {
+        // SAVE BUTTON
+        saveButton = new JButton("save");
+        saveButton.setBounds(165,465,100,60);
+        saveButton.addActionListener(this);
+        panel.add(saveButton);
+    }
+
+    private void createLoadButton() {
+        // LOAD BUTTON
+        loadButton = new JButton("load");
+        loadButton.setBounds(45,465,100,60);
+        loadButton.addActionListener(this);
+        panel.add(loadButton);
+    }
+
     // EFFECTS: creates labels for choreography text box, result text box, label button and save button.
     public void createLabels() {
+
         // CHOREOGRAPHY LABEL
         JLabel choreographyLabel = new JLabel("Your choreography so far:");
         choreographyLabel.setBounds(50, 30, 300, 15);
@@ -182,42 +209,47 @@ public class Main extends JFrame implements ActionListener {
     // EFFECTS: performs an action based on the button clicked
     public void actionPerformed(ActionEvent e) {
         PopUpWindow newWindow = new PopUpWindow(this.choreography);
+
         if (e.getSource() == typeButton) {
-            loadLabel.setVisible(false);
-            saveLabel.setVisible(false);
+            makeSaveAndLoadLabelsInvisible();
             newWindow.giveInstructions("type");
         } else if (e.getSource() == elementButton) {
-            loadLabel.setVisible(false);
-            saveLabel.setVisible(false);
+            makeSaveAndLoadLabelsInvisible();
             newWindow.giveInstructions("element");
         } else if (e.getSource() == fallButton) {
-            loadLabel.setVisible(false);
-            saveLabel.setVisible(false);
+            makeSaveAndLoadLabelsInvisible();
             newWindow.giveInstructions("fall");
         } else if (e.getSource() == durationButton) {
-            loadLabel.setVisible(false);
-            saveLabel.setVisible(false);
+            makeSaveAndLoadLabelsInvisible();
             newWindow.giveInstructions("duration");
         } else if (e.getSource() == sscButton) {
-            loadLabel.setVisible(false);
-            saveLabel.setVisible(false);
+            makeSaveAndLoadLabelsInvisible();
             newWindow.giveInstructions("ssc");
         } else if (e.getSource() == calculateButton) {
             // code taken from https://www.codejava.net/coding/java-audio-player-sample-application-in-swing
-            player.play();
-            reportResults();
-            player.stop();
-            try {
-                player.load(audioFilePath);
-            } catch (UnsupportedAudioFileException | IOException |
-                    LineUnavailableException unsupportedAudioFileException) {
-                unsupportedAudioFileException.printStackTrace();
-            }
+            makeSongStopAndReload();
         } else if (e.getSource() == loadButton) {
             loadChoreography();
         } else if (e.getSource() == saveButton) {
             saveChoreography();
         }
+    }
+
+    private void makeSongStopAndReload() {
+        player.play();
+        reportResults();
+        player.stop();
+        try {
+            player.load(audioFilePath);
+        } catch (UnsupportedAudioFileException | IOException
+                | LineUnavailableException unsupportedAudioFileException) {
+            unsupportedAudioFileException.printStackTrace();
+        }
+    }
+
+    public void makeSaveAndLoadLabelsInvisible() {
+        loadLabel.setVisible(false);
+        saveLabel.setVisible(false);
     }
 
     // taken from JSONSerializationDemo: https://github.com/stleary/JSON-java.git
@@ -278,7 +310,7 @@ public class Main extends JFrame implements ActionListener {
             String name = e.getElementName();
             String type = e.getElementType();
             double goe = e.getGOE();
-            counter ++;
+            counter++;
 
             result.append("  ").append(ordinal(counter)).append(" element:")
                     .append("\n     name: ").append(name).append("\n     type: ")

@@ -268,37 +268,61 @@ public class PopUpWindow extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == shortButton) {
-            this.choreography.setType(true);
-            programTypeLabel.setVisible(true);
+            shortButtonBehavior();
         } else if (e.getSource() == freeButton) {
-            this.choreography.setType(false);
-            programTypeLabel.setText("Your program type has been set to: free");
-            programTypeLabel.setVisible(true);
+            freeButtonBehavior();
         } else if (e.getSource() == nextElementButton) {
-            try {
-                goToNextElementQuestion();
-            } catch (IOException ioException) {
-                warningForElement = new JLabel("Please try again and enter a valid element.");
-                warningForElement.setBounds(400,220,500,15);
-                frame.add(warningForElement);
-            }
+            nextElementButtonBehavior();
         } else if (e.getSource() == setFallButton) {
-            int falls = Integer.parseInt(fallTextBox.getText());
-            this.choreography.addFalls(falls);
-            fallIsSetLabel.setText("The number of falls have been set to " + falls + ".");
-            fallIsSetLabel.setVisible(true);
+            fallButtonBehavior();
         } else if (e.getSource() == setDurationButton) {
-            double duration = Double.parseDouble(durationTextBox.getText());
-            this.choreography.setDuration(duration);
-            durationIsSetLabel.setText("The duration has been set to " + duration + ".");
-            durationIsSetLabel.setVisible(true);
+            durationButtonBehavior();
         } else if (e.getSource() == setSscButton) {
-            double ssc = Double.parseDouble(sscTextBox.getText());
-            this.choreography.setSkatingSkillsComponent(ssc);
-            sscIsSetLabel.setText("The skating skills component has been set to " + ssc + ".");
-            sscIsSetLabel.setVisible(true);
+            sscButtonBehavior();
         }
 
+    }
+
+    private void sscButtonBehavior() {
+        double ssc = Double.parseDouble(sscTextBox.getText());
+        this.choreography.setSkatingSkillsComponent(ssc);
+        sscIsSetLabel.setText("The skating skills component has been set to " + ssc + ".");
+        sscIsSetLabel.setVisible(true);
+    }
+
+    private void durationButtonBehavior() {
+        double duration = Double.parseDouble(durationTextBox.getText());
+        this.choreography.setDuration(duration);
+        durationIsSetLabel.setText("The duration has been set to " + duration + ".");
+        durationIsSetLabel.setVisible(true);
+    }
+
+    private void fallButtonBehavior() {
+        int falls = Integer.parseInt(fallTextBox.getText());
+        this.choreography.addFalls(falls);
+        fallIsSetLabel.setText("The number of falls have been set to " + falls + ".");
+        fallIsSetLabel.setVisible(true);
+    }
+
+    private void nextElementButtonBehavior() {
+        try {
+            goToNextElementQuestion();
+        } catch (IOException ioException) {
+            warningForElement = new JLabel("Please try again and enter a valid element.");
+            warningForElement.setBounds(400,220,500,15);
+            frame.add(warningForElement);
+        }
+    }
+
+    private void freeButtonBehavior() {
+        this.choreography.setType(false);
+        programTypeLabel.setText("Your program type has been set to: free");
+        programTypeLabel.setVisible(true);
+    }
+
+    private void shortButtonBehavior() {
+        this.choreography.setType(true);
+        programTypeLabel.setVisible(true);
     }
 
     private void goToNextElementQuestion() throws IOException {
@@ -324,12 +348,18 @@ public class PopUpWindow extends JFrame implements ActionListener {
                 break;
         }
 
+        switchToNextElementOnGUI();
+        allTheElementsAreEnteredAction();
+    }
+
+    private void switchToNextElementOnGUI() {
         elementTextBox.setText("");
         goeTextBox.setText("");
-
         elementNumber++;
         elementLabel12.setText(ordinal(elementNumber) + " element:");
+    }
 
+    private void allTheElementsAreEnteredAction() {
         if ((this.choreography.getType() && (elementNumber - 1 == 7))
                 || (!this.choreography.getType() && (elementNumber - 1 == 12))) {
             elementLabel12.setVisible(false);
@@ -344,7 +374,9 @@ public class PopUpWindow extends JFrame implements ActionListener {
         }
     }
 
-    public Choreography getChoreography() { return this.choreography; }
+    public Choreography getChoreography() {
+        return this.choreography;
+    }
 
     private static String ordinal(int i) {
         String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
