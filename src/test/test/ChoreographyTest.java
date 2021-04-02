@@ -467,6 +467,7 @@ public class ChoreographyTest {
         assertEquals("Jump", choreography.typeFinder("3T"));
         assertEquals("Spin", choreography.typeFinder("FCCoSp4V"));
         assertEquals("Spin", choreography.typeFinder("CoSpB"));
+        assertEquals("!!!", choreography.typeFinder("abcdef"));
 
     }
 
@@ -503,7 +504,53 @@ public class ChoreographyTest {
         assertEquals("2", choreography.rotationOrLevelFinder("2A", "Jump"));
         assertEquals("3", choreography.rotationOrLevelFinder("3T", "Jump"));
         assertEquals("4", choreography.rotationOrLevelFinder("FCCoSp4V", "Spin"));
+        assertEquals("0", choreography.rotationOrLevelFinder("FCCoSpBV", "Spin"));
         assertEquals("0", choreography.rotationOrLevelFinder("CoSpB", "Spin"));
+
+    }
+
+    @Test
+    void testCalculate() {
+
+        Element e1 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element e2 = new Jump("3Lo", 4.90, 0.35, "Jump", 3);
+        Element e3 = new Spin("FSSp4", 3.00, -0.13, "Spin", 4);
+        Element e4 = new Step("StSq3", 3.30, -0.13, "Step", 3);
+        Element e5 = new Jump("2A", 3.30, 0.13, "Jump", 2);
+        Element e6 = new Spin("LSp4", 2.70, 1.23, "Spin", 4);
+        Element e7 = new Spin("CCoSp3", 3.00, -0.98, "Spin", 3);
+
+        List<Element> myElements = new ArrayList<>();
+        myElements.add(e1);
+        myElements.add(e2);
+        myElements.add(e3);
+        myElements.add(e4);
+        myElements.add(e5);
+        myElements.add(e6);
+        myElements.add(e7);
+
+        Choreography IrmaksShortChoreography = new Choreography("Irmak's choreography", 0.0,
+                1, 2.45, true, 31.23, myElements);
+
+        // technicalPointsWithoutGOE = 25.4;
+        // equals to 5.20 + 4.90 + 3.00 + 3.30 + 3.30 + 2.70 + 3.00
+
+        // totalGoePoints = 1.52;
+        // equals to 0.15 + 0.35 - 0.13 - 0.13 + 0.13 + 0.33 + 1.23 + 0.27 + 0.30 - 0.98
+
+        // totalTechnicalPoint = 26.92;
+        // equals to technicalPointsWithoutGOE + totalGoePoints
+
+        // totalSkatingSkillsPoint = 31.23;
+
+        // deductions = 0.5
+
+        // totalPoint = 57.65
+        // equals to totalTechnicalPoint + totalSkatingSkillsPoint - deductions
+
+        assertEquals(IrmaksShortChoreography.calculate(), "\n\nThe points you will get from this\nchoreography "
+                + "is: 57.65.\n\nYou have 0.50 deductions.\nYour technical score is 26.92."
+                + "\nYour skating skills component\nis 31.23.");
 
     }
 }

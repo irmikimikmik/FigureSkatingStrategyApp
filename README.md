@@ -1,4 +1,4 @@
-# Strategy Determinator for Figure Skating Choreographies
+# Strategy Determiner for Figure Skating Choreographies
 
 ## by Clover (also known as w1q0i or Irmak Bayir)
 
@@ -69,6 +69,7 @@ think of the element.
 book.
 - As a user, I want to be able to save my choreography to file.
 - As a user, I want to be able to be able to load my choreography from file.
+<<<<<<< HEAD
 - As a user, when I start the application, I want to be given the option to load my choreography from file.
 
 #### Phase 4: Task 2
@@ -76,13 +77,23 @@ book.
 exception.  You must have one test for the case where the exception is expected and another where the exception is not 
 expected."
 
-    Class with robust design: model.Choreography
-    Method with robust design: basePointFinder(String elementName)
-    How is it robust: basePointFinder considers the scenario of the user not entering a valid element in the field and
-    thus, throws and exception if it cannot find the element that was written by the user in the CSV file that contains
-    all the base points of every single element in figure skating
-    When is the exception caught: actionPerformed(ActionEvent e) in ui.PopUpWindow catches IOException that was thrown
-    when the input of the user can't be found by the CSV file reader in any lines of the file
-    !!! basePointFinder method has its 2 tests in the ChoreographyTest class where the first test written for it expects
-    the exception and fails if it is not caught and the second one doesn't expect and exception and fails when an
-    exception is caught.
+- Class with robust design: model.Choreography
+- Method with robust design: basePointFinder(String elementName)
+- How is it robust: basePointFinder considers the scenario of the user not entering a valid element in the field and
+thus, throws and exception if it cannot find the element that was written by the user in the CSV file that contains
+all the base points of every single element in figure skating
+- When is the exception caught: actionPerformed(ActionEvent e) in ui.PopUpWindow catches IOException that was thrown
+when the input of the user can't be found by the CSV file reader in any lines of the file
+    
+!!! basePointFinder method has its 2 tests in the ChoreographyTest class where the first test written for it expects
+the exception and fails if it is not caught and the second one doesn't expect and exception and fails when an
+exception is caught.
+    
+#### Phase 4: Task 3
+To refactor my code, I would create another class and put the contents of Choreography that are related to making the 
+calculations in there. I feel like so many methods are gathered in Choreography and the class has more than a single
+responsibility which decreases cohesion. I would also do the same thing for my Main class. I would create another class
+named GUI and do all the work related to the graphical user interface in there. This way, I would only need to create a
+new GUI object in the Main class.
+Other than these changes, I wouldn't change the way I extend abstract classes or implement interfaces. Looking at my UML
+diagram, I believe that my object-oriented program functions well in terms of being structured.
