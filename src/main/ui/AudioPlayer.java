@@ -1,4 +1,4 @@
-package sound;
+package ui;
 
 import javax.sound.sampled.*;
 import java.io.File;

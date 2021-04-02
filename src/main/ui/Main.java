@@ -4,7 +4,6 @@ import model.Choreography;
 import model.Element;
 import persistence.JsonReader;
 import persistence.JsonWriter;
-import sound.AudioPlayer;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;

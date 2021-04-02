@@ -13,13 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ChoreographyTest {
 
-    // !!!
-    // THIS IS AN EXAMPLE TEST FOR CHOREOGRAPHY CLASS, A CLASS THAT ONLY HAS GETTERS AND SETTERS AS ITS METHODS.
-    // ELEMENT, JUMP, SPIN AND STEP CLASSES ONLY HAVE GETTERS AND SETTERS AS WELL.
-    // SINCE THESE METHODS DON'T CONTAIN ANY LOGIC, THE TESTS WEREN'T ABLE TO REFLECT WHETHER THE METHODS WERE DESIGNED
-    //       POORLY OR NOT. THUS, TEST CLASSES FOR ELEMENT, JUMP, SPIN AND STEP CLASSES WILL NOT BE CREATED UNLESS
-    //       METHODS BESIDES GETTERS AND SETTERS WILL BE IMPLEMENTED.
-
     private Choreography choreography;
     private Element element;
 
@@ -552,5 +545,58 @@ public class ChoreographyTest {
                 + "is: 57.65.\n\nYou have 0.50 deductions.\nYour technical score is 26.92."
                 + "\nYour skating skills component\nis 31.23.");
 
+    }
+
+    @Test
+    void testEligibility() {
+
+        Choreography notEChoreographyNotEDuration = new Choreography("not eligible for both "
+                + "choreography and duration", 0.0, 1, 0.00, true, 31.23,
+                new ArrayList<>());
+
+        Choreography notEChoreographyEDuration = new Choreography("not eligible for "
+                + "choreography, eligible for duration", 0.0, 1, 4.00, false, 31.23,
+                new ArrayList<>());
+
+        Element e1 = new Jump("3F", 5.20, 0.15, "Jump", 3);
+        Element e2 = new Jump("3Lo", 4.90, 0.35, "Jump", 3);
+        Element e3 = new Spin("FSSp4", 3.00, -0.13, "Spin", 4);
+        Element e4 = new Step("StSq3", 3.30, -0.13, "Step", 3);
+        Element e5 = new Jump("2A", 3.30, 0.13, "Jump", 2);
+        Element e6 = new Spin("LSp4", 2.70, 1.23, "Spin", 4);
+        Element e7 = new Spin("CCoSp3", 3.00, -0.98, "Spin", 3);
+
+        List<Element> correctChoreography = new ArrayList<>();
+        correctChoreography.add(e1);
+        correctChoreography.add(e2);
+        correctChoreography.add(e3);
+        correctChoreography.add(e4);
+        correctChoreography.add(e5);
+        correctChoreography.add(e6);
+        correctChoreography.add(e7);
+
+        Choreography eChoreographyNotEDuration = new Choreography("not eligible for duration, "
+                + "eligible for choreography", 0.0, 1, 4.00, true, 31.23,
+                correctChoreography);
+
+        Choreography eChoreographyEDuration = new Choreography("not eligible for duration, "
+                + "eligible for choreography", 0.0, 1, 2.40, true, 31.23,
+                correctChoreography);
+
+
+        assertEquals(notEChoreographyNotEDuration.printOutEligibility("short"),
+                "Your choreography DOES NOT match\nthe rules of ISU rule book's short\nprogram definition due to"
+                        + " incorrect\narrangement of elements\nand duration.");
+
+        assertEquals(notEChoreographyEDuration.printOutEligibility("free"),
+                "Your choreography DOES NOT match\nthe rules of ISU rule book's free\nprogram definition due to"
+                        + " incorrect\narrangement of elements.");
+
+        assertEquals(eChoreographyNotEDuration.printOutEligibility("short"),
+                "Your choreography DOES NOT match\nthe rules of ISU rule book's short\nprogram definition due to"
+                        + " incorrect\nduration.");
+
+        assertEquals(eChoreographyEDuration.printOutEligibility("short"),
+                "Your choreography matches the\nrules of ISU rule book's short\nprogram definition.");
     }
 }

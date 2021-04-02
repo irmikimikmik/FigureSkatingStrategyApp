@@ -315,12 +315,11 @@ public class Choreography implements Writable {
                 return "Step";
             } else if (s.contains("Sp")) {
                 return "Spin";
-            } else {
-                System.out.println("The element name is still not valid. Please use ISU abbreviations.");
             }
         }
 
-        return "The element name is still not valid. Please use ISU abbreviations.";
+        // reaching here means that "The element name is not valid. Please use ISU abbreviations."
+        return "!!!";
     }
 
     // EFFECTS: considers the total technical score, skating skills score, falls and prints the final result
