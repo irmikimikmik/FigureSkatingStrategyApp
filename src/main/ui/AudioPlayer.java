@@ -64,7 +64,6 @@ public class AudioPlayer implements LineListener {
         }
 
         audioClip.close();
-
     }
 
     // EFFECTS: stops the audio

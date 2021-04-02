@@ -32,7 +32,9 @@ public class StrategyApp extends JFrame {
         runStrategy();
     }
 
-    public Choreography getChoreography() { return this.choreography; }
+    public Choreography getChoreography() {
+        return this.choreography;
+    }
 
     // EFFECTS: depending on the input from the user, proceeds to start to prediction or quits.
     private void runStrategy() {
