@@ -96,4 +96,5 @@ responsibility which decreases cohesion. I would also do the same thing for my M
 named GUI and do all the work related to the graphical user interface in there. This way, I would only need to create a
 new GUI object in the Main class.
 Other than these changes, I wouldn't change the way I extend abstract classes or implement interfaces. Looking at my UML
-diagram, I believe that my object-oriented program functions well in terms of being structured.
+diagram, I believe that my object-oriented program functions well in terms of being structured except for the issues
+mentioned above.
