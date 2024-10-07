@@ -1,6 +1,4 @@
-# Strategy Determiner for Figure Skating Choreographies
-
-## by Clover (also known as w1q0i or Irmak Bayir)
+# Figure Skating Strategy App: A tool for determining the most optimal choreography
 
 #### General Information:
 
