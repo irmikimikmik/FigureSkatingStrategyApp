@@ -72,11 +72,10 @@ book.
 <<<<<<< HEAD
 - As a user, when I start the application, I want to be given the option to load my choreography from file.
 
-#### Phase 4: Task 2
-"Test and design a class in your model package that is robust.  You must have at least one method that throws a checked 
-exception.  You must have one test for the case where the exception is expected and another where the exception is not 
-expected."
+#### Testing:
+I have imlpemented robust testing mechanisms utilizing exception handling and unit tests.
 
+Example:
 - Class with robust design: model.Choreography
 - Method with robust design: basePointFinder(String elementName)
 - How is it robust: basePointFinder considers the scenario of the user not entering a valid element in the field and
@@ -85,11 +84,7 @@ all the base points of every single element in figure skating
 - When is the exception caught: actionPerformed(ActionEvent e) in ui.PopUpWindow catches IOException that was thrown
 when the input of the user can't be found by the CSV file reader in any lines of the file
     
-!!! basePointFinder method has its 2 tests in the ChoreographyTest class where the first test written for it expects
-the exception and fails if it is not caught and the second one doesn't expect and exception and fails when an
-exception is caught.
-    
-#### Phase 4: Task 3
+#### Room for Improvement:
 To refactor my code, I would create another class and put the contents of Choreography that are related to making the 
 calculations in there. I feel like so many methods are gathered in Choreography and the class has more than a single
 responsibility which decreases cohesion. I would also do the same thing for my Main class. I would create another class
